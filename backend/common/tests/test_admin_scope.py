@@ -287,7 +287,14 @@ class TestOrganizationMode:
 
         response = root.post(
             "/admin/invoices/product/add/",
-            {"name": "Mine", "price": "1", "org": str(org_a.pk), "is_active": "on"},
+            {
+                "name": "Mine",
+                "price": "1",
+                "size": "Unique",
+                "stock": "0",
+                "org": str(org_a.pk),
+                "is_active": "on",
+            },
         )
 
         assert response.status_code == 302
