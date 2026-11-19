@@ -256,6 +256,22 @@ class Product(BaseModel):
     )
     category = models.CharField(_("Category"), max_length=100, blank=True, null=True)
     is_active = models.BooleanField(_("Is Active"), default=True)
+    # Read by `orders.inventory`, shared by every sales channel. Empty means
+    # "no information", which the order import treats as 0 for both.
+    stock_quantity = models.DecimalField(
+        _("Stock Quantity"),
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Physical units on hand. Empty is read as 0.",
+    )
+    availability_days = models.PositiveIntegerField(
+        _("Availability Time (days)"),
+        null=True,
+        blank=True,
+        help_text="Days to have the product ready after a sale. Empty is read as 0.",
+    )
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="products")
 
     class Meta:

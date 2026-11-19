@@ -100,9 +100,13 @@ ORG_SCOPED_TABLES = [
     "recurring_invoice_line_item",
     # Products
     "product",
-    # Orders
+    # Orders, plus the channel sales tables that orders/0006 stamps.
     "orders",
     "order_line_item",
+    "order_channel_listing",
+    "order_work_order",
+    "order_import_run",
+    "order_import_run_entry",
     #
     # `security_audit_log` is deliberately NOT here. It is a platform-level
     # ledger, not tenant data: its `org` is `null=True` because the events it

@@ -1,10 +1,11 @@
 from django.contrib import admin
 
+from common.admin_mixins import OrgScopedAdmin
 from leads.models import Lead
 
 
 @admin.register(Lead)
-class LeadAdmin(admin.ModelAdmin):
+class LeadAdmin(OrgScopedAdmin, admin.ModelAdmin):
     # is_sample marks leads created by the vertical-pack applier's sample
     # data and is the guard `clear_sample_data` uses to decide what it may
     # delete (see common/packs/applier.py). It must never be editable here.

@@ -195,6 +195,38 @@ with an empty context and its delete matches nothing. Read notifications are nev
 the practical warning: a docstring claiming a task is exempt is not evidence, and the failure is
 silent, the task reports success having done nothing at all.
 
+## The Django admin
+
+The Django admin (`/admin/`) has no organization of its own, so on signing in a staff user chooses
+where to work, on a page the admin sends them to until they do:
+
+- **One organization.** Every admin request runs with that organization's RLS context, and every
+  admin of an org-scoped model lists, opens, offers in its pickers and saves only that
+  organization's records (`OrgScopedAdmin` in `backend/common/admin_mixins.py`). The user list
+  shows its members.
+- **The whole instance** (superusers only). Lists show every organization's records, with the
+  organization column and filter.
+
+A superuser may choose any active organization; any other staff user only the active
+organizations where they hold an active admin membership, and never the instance. The choice is
+checked again on every request, so a revoked membership or a deactivated organization sends the
+user back to choose. **Switch**, on the admin's home page, changes it; every choice is written to
+the security audit log (`ORG_SWITCH`). The header shows the current one.
+
+Under an application role that RLS binds, instance mode needs a connection whose role bypasses
+RLS. Set `ADMIN_DBUSER` and `ADMIN_DBPASSWORD` to such a role, and the admin's instance-mode
+requests (and only those) use it:
+
+```sql
+CREATE ROLE crm_admin WITH LOGIN PASSWORD 'change-me' NOSUPERUSER BYPASSRLS;
+GRANT crm_user TO crm_admin;
+```
+
+Without it, instance mode is offered only where the application role itself bypasses RLS (a
+superuser role, or SQLite in development), and the chooser says why it is not available.
+Whoever holds `ADMIN_DBPASSWORD` can read every organization's data, so keep it as closely as the
+database superuser's.
+
 ## Common mistakes
 
 - **Leaving the default database role as `postgres`.** Nothing enforces a non-superuser role for

@@ -1,0 +1,29 @@
+{% extends "admin/base_site.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label='orders' %}">Orders</a>
+  &rsaquo; <a href="{% url 'admin:orders_order_changelist' %}">Orders</a>
+  &rsaquo; {{ title }}
+</div>
+{% endblock %}
+{% block content %}
+<div id="content-main">
+  <p>Each import is kept, with its whole log (what was imported, what needs
+  following up, and what was not imported and why), in
+  <a href="{% url 'admin:orders_importrun_changelist' %}">Import runs</a>.</p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="module aligned">
+      {% for field in form %}
+        <div class="form-row">
+          {{ field.errors }}
+          {{ field.label_tag }} {{ field }}
+          {% if field.help_text %}<div class="help">{{ field.help_text }}</div>{% endif %}
+        </div>
+      {% endfor %}
+    </fieldset>
+    <div class="submit-row"><input type="submit" value="Import" class="default"></div>
+  </form>
+</div>
+{% endblock %}

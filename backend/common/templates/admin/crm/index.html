@@ -1,0 +1,7 @@
+{% extends "admin/index.html" %}
+{% block content %}
+{% if admin_scope %}
+  <p id="admin-scope">Working in: <strong>{{ admin_scope.label }}</strong>. <a href="{% url 'admin:scope' %}">Switch</a></p>
+{% endif %}
+{{ block.super }}
+{% endblock %}

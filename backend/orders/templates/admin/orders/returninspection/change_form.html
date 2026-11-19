@@ -1,0 +1,16 @@
+{% extends "admin/change_form.html" %}
+{% comment %}
+A pending return is decided here: the form saves the quantity to restock and
+the notes first, then ReturnInspectionAdmin.response_change accepts or rejects.
+{% endcomment %}
+{% block submit_buttons_bottom %}
+{% if original and original.status == "PENDING" %}
+<div class="submit-row">
+  <input type="submit" value="Accept and restock" class="default" name="_accept_return">
+  <input type="submit" value="Reject (do not restock)" name="_reject_return">
+  <input type="submit" value="Save notes" name="_continue">
+</div>
+{% else %}
+{{ block.super }}
+{% endif %}
+{% endblock %}

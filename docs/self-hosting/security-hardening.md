@@ -49,6 +49,13 @@ Full detail: how to create the role, how RLS policies are applied, and how to pr
 for real data rather than trusting that it does, is in
 [PostgreSQL and RLS](postgresql-and-rls.md).
 
+## The Django admin
+
+The admin works in one organization at a time, or, for superusers, across the whole instance; the
+choice is audited (`ORG_SWITCH`). Instance mode under an RLS-bound role needs `ADMIN_DBUSER`, a
+role that bypasses RLS: leave it unset unless you need instance mode, and treat its password like
+the database superuser's. See [PostgreSQL and RLS: The Django admin](postgresql-and-rls.md#the-django-admin).
+
 ## Secrets
 
 `SECRET_KEY` does more than Django's usual signing duties here: `SIMPLE_JWT["SIGNING_KEY"]` in

@@ -282,6 +282,32 @@ class AuditLogger:
             request=request,
         )
 
+    def admin_scope_changed(
+        self, user, from_org, to_org, from_instance=False, request=None
+    ):
+        """Log a Django admin session choosing its organization, or the
+        whole instance (`to_org` None). See `common.admin_scope`."""
+
+        def label(org, instance):
+            return org.name if org else ("the whole instance" if instance else "none")
+
+        self._log(
+            "ORG_SWITCH",
+            user=user,
+            org=to_org,
+            description=(
+                f"Admin switched from {label(from_org, from_instance)} to "
+                f"{label(to_org, to_org is None)}"
+            ),
+            metadata={
+                "admin": True,
+                "from_org_id": str(from_org.id) if from_org else None,
+                "to_org_id": str(to_org.id) if to_org else None,
+                "instance": to_org is None,
+            },
+            request=request,
+        )
+
     def token_refresh(self, user, org, request=None):
         """Log token refresh."""
         self._log(
