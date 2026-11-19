@@ -1,13 +1,16 @@
 from django.contrib import admin
 
+from common.admin_mixins import OrgScopedAdmin
 from tasks.models import Board, BoardColumn, BoardMember, BoardTask, Task
 
-# Register Task model
-admin.site.register(Task)
+
+@admin.register(Task)
+class TaskAdmin(OrgScopedAdmin, admin.ModelAdmin):
+    pass
 
 
 @admin.register(Board)
-class BoardAdmin(admin.ModelAdmin):
+class BoardAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = ("name", "owner", "org", "is_archived", "created_at")
     list_filter = ("is_archived", "org", "created_at")
     search_fields = ("name", "owner__user__email")
@@ -15,7 +18,7 @@ class BoardAdmin(admin.ModelAdmin):
 
 
 @admin.register(BoardMember)
-class BoardMemberAdmin(admin.ModelAdmin):
+class BoardMemberAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = ("board", "profile", "role", "created_at")
     list_filter = ("role", "created_at")
     search_fields = ("board__name", "profile__user__email")
@@ -23,7 +26,7 @@ class BoardMemberAdmin(admin.ModelAdmin):
 
 
 @admin.register(BoardColumn)
-class BoardColumnAdmin(admin.ModelAdmin):
+class BoardColumnAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = ("board", "name", "order", "color", "limit")
     list_filter = ("board__org", "created_at")
     search_fields = ("name", "board__name")
@@ -32,7 +35,7 @@ class BoardColumnAdmin(admin.ModelAdmin):
 
 
 @admin.register(BoardTask)
-class BoardTaskAdmin(admin.ModelAdmin):
+class BoardTaskAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "title",
         "column",

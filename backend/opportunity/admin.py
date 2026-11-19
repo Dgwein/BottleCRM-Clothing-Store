@@ -1,9 +1,10 @@
 from django.contrib import admin
 
+from common.admin_mixins import OrgScopedAdmin
 from opportunity.models import Opportunity, OpportunityLineItem
 
 
-class OpportunityLineItemInline(admin.TabularInline):
+class OpportunityLineItemInline(OrgScopedAdmin, admin.TabularInline):
     model = OpportunityLineItem
     extra = 0
     fields = (
@@ -22,7 +23,7 @@ class OpportunityLineItemInline(admin.TabularInline):
 
 
 @admin.register(Opportunity)
-class OpportunityAdmin(admin.ModelAdmin):
+class OpportunityAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "name",
         "account",
@@ -40,7 +41,7 @@ class OpportunityAdmin(admin.ModelAdmin):
 
 
 @admin.register(OpportunityLineItem)
-class OpportunityLineItemAdmin(admin.ModelAdmin):
+class OpportunityLineItemAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "name",
         "opportunity",

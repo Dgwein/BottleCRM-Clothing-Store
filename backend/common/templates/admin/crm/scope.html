@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% block breadcrumbs %}{% endblock %}
+{% block content %}
+<div id="content-main">
+  {% if error %}<ul class="messagelist"><li class="error">{{ error }}</li></ul>{% endif %}
+  {% if current %}<p>You are working in: <strong>{{ current.label }}</strong>.</p>{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <fieldset class="module aligned">
+      <h2>Work in one organization</h2>
+      {% for org in orgs %}
+        <div class="form-row">
+          <label><input type="radio" name="scope" value="{{ org.pk }}"{% if current.org.pk == org.pk %} checked{% endif %}> {{ org.name }}</label>
+        </div>
+      {% empty %}
+        <div class="form-row">There is no organization you administer.</div>
+      {% endfor %}
+    </fieldset>
+    {% if instance_offered %}
+      <fieldset class="module aligned">
+        <h2>Work across the whole instance</h2>
+        <div class="form-row">
+          {% if may_use_instance %}
+            <label><input type="radio" name="scope" value="instance"{% if current and not current.org %} checked{% endif %}> Whole instance (every organization)</label>
+          {% else %}
+            Not available: this database enforces row-level security and no
+            instance connection (ADMIN_DBUSER) is configured.
+          {% endif %}
+        </div>
+      </fieldset>
+    {% endif %}
+    <div class="submit-row"><input type="submit" value="Continue" class="default"></div>
+  </form>
+</div>
+{% endblock %}

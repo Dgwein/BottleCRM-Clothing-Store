@@ -224,9 +224,13 @@ def test_the_admin_form_refuses_it(org_a, account, admin_user):
     from django.contrib.admin.sites import site
     from django.test import RequestFactory
 
+    from common.admin_scope import Scope
+
     invoice = Invoice.objects.create(org=org_a, account=account, invoice_title="W")
     request = RequestFactory().get("/admin/")
     request.user = admin_user
+    # As the admin runs it: working in the invoice's organization.
+    request.admin_scope = Scope(org_a)
     Form = site._registry[Invoice].get_form(request, invoice)
     data = {
         name: getattr(invoice, name)

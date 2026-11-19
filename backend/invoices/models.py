@@ -265,6 +265,12 @@ class Product(BaseModel):
     )
     category = models.CharField(_("Category"), max_length=100, blank=True, null=True)
     is_active = models.BooleanField(_("Is Active"), default=True)
+    availability_days = models.PositiveIntegerField(
+        _("Availability Time (days)"),
+        null=True,
+        blank=True,
+        help_text="Days to have the product ready after a sale. Empty is read as 0.",
+    )
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="products")
     catalog_product = models.ForeignKey(
         "catalog.CatalogProduct",

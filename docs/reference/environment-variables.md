@@ -67,6 +67,8 @@ itself, so they aren't in the table below:
 | `DBPASSWORD` | `postgres` | Yes, alongside `DBUSER` | PostgreSQL password. |
 | `DBHOST` | `localhost` | No | PostgreSQL host. |
 | `DBPORT` | `5432` | No | PostgreSQL port. |
+| `ADMIN_DBUSER` | (none) | No | A PostgreSQL role with `BYPASSRLS` for the Django admin's whole-instance mode. Only the admin's instance-mode requests use it. See [PostgreSQL and RLS: The Django admin](../self-hosting/postgresql-and-rls.md#the-django-admin). |
+| `ADMIN_DBPASSWORD` | (none) | With `ADMIN_DBUSER` | Its password. It reads every organization's data. |
 
 ### Connection pooling
 

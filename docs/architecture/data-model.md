@@ -34,6 +34,10 @@ which is exactly why they're written down here with the file and line that makes
   no change. `Invoice.sales_channel` and `Order.sales_channel` record the channel a sale came
   through; the account stays the customer. See [Product catalog](catalog.md).
 - **Order** (`backend/orders/models.py`), `Order`/`OrderLineItem`.
+- **Order** (`backend/orders/models.py`), `Order`/`OrderLineItem`, plus `ChannelListing`,
+  `WorkOrder` (preparation, packaging and return inspection), `ChannelPreference`, `ImportRun` and
+  `ImportRunEntry` for sales imported from online channels (see
+  [Online channel orders](../features/channel-orders.md)).
 - **Interaction** (`backend/interactions/models.py`): a call, meeting, email, WhatsApp message or
   SMS logged on a record, or an enquiry a lead made. It links to any of a lead, contact, account,
   deal and ticket, and `home` names the one it was logged on, whose visibility alone decides who

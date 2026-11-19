@@ -55,7 +55,8 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(","
 
 INSTALLED_APPS = [
     "django.contrib.auth",
-    "django.contrib.admin",
+    # django.contrib.admin, with the organization-scoped site as admin.site.
+    "common.admin_site.CRMAdminConfig",
     "django.contrib.contenttypes",
     "django.contrib.messages",
     "django.contrib.sessions",
@@ -193,6 +194,20 @@ if DB_POOL_ENABLED:
             "reset": reset_rls_context,
         }
     }
+
+
+# Optional: the connection the Django admin's whole-instance mode reads and
+# writes through. Its role must bypass row-level security; without it, instance
+# mode is offered only where the default role already does (development). See
+# common/admin_scope.py and docs/self-hosting/postgresql-and-rls.md.
+if os.environ.get("ADMIN_DBUSER"):
+    DATABASES["admin_instance"] = {
+        **DATABASES["default"],
+        "USER": os.environ["ADMIN_DBUSER"],
+        "PASSWORD": os.environ.get("ADMIN_DBPASSWORD", ""),
+        "TEST": {"MIRROR": "default"},
+    }
+    DATABASE_ROUTERS = ["crm.db_router.AdminInstanceRouter"]
 
 
 # Password validation

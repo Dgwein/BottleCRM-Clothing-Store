@@ -10,6 +10,7 @@ from django.contrib.admin.sites import site
 from django.test import RequestFactory
 
 from accounts.models import Account
+from common.admin_scope import Scope
 from common.models import User
 from invoices.admin import (
     ESTIMATE_AMOUNT_FIELDS,
@@ -62,10 +63,15 @@ CASES = [
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize("scoped", [False, True], ids=["no scope", "org scope"])
 @pytest.mark.parametrize("model, make, inline, amounts, status", CASES)
 def test_issued_document_is_locked_in_the_admin(
-    request_, org_a, model, make, inline, amounts, status
+    request_, org_a, model, make, inline, amounts, status, scoped
 ):
+    # The admin works in an organization (common/admin_scope.py); the lock
+    # holds there as it does outside one.
+    if scoped:
+        request_.admin_scope = Scope(org_a)
     document, line = make(org_a, status)
     document_admin = site._registry[model]
     line_admin = site._registry[type(line)]
@@ -82,10 +88,13 @@ def test_issued_document_is_locked_in_the_admin(
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize("scoped", [False, True], ids=["no scope", "org scope"])
 @pytest.mark.parametrize("model, make, inline, amounts, status", CASES)
 def test_draft_document_stays_editable_in_the_admin(
-    request_, org_a, model, make, inline, amounts, status
+    request_, org_a, model, make, inline, amounts, status, scoped
 ):
+    if scoped:
+        request_.admin_scope = Scope(org_a)
     document, line = make(org_a, "Draft")
     document_admin = site._registry[model]
     line_admin = site._registry[type(line)]
@@ -102,12 +111,15 @@ def test_draft_document_stays_editable_in_the_admin(
 
 
 @pytest.mark.django_db
+@pytest.mark.parametrize("scoped", [False, True], ids=["no scope", "org scope"])
 @pytest.mark.parametrize(
     "make, field", [(_invoice, "invoice"), (_estimate, "estimate")]
 )
 def test_standalone_line_admin_refuses_a_new_line_on_an_issued_document(
-    request_, org_a, make, field
+    request_, org_a, make, field, scoped
 ):
+    if scoped:
+        request_.admin_scope = Scope(org_a)
     issued, line = make(org_a, "Sent")
     draft, _ = make(org_a, "Draft")
     line_admin = site._registry[type(line)]

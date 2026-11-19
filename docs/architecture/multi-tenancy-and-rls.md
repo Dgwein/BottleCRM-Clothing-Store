@@ -172,6 +172,16 @@ forgotten, or wrong. The two layers fail differently, which is exactly why both 
 Treat every new queryset the same way regardless of which layer you're thinking about: write the
 `org=` filter as if RLS didn't exist, because on a misconfigured deployment, it doesn't.
 
+## The Django admin
+
+`/admin/` is exempt from `RequireOrgContext`: a staff session has no org claim. Instead the admin
+site (`common/admin_site.py`) asks the user to choose an organization or the whole instance, and
+runs each admin view, rendering included, in that choice: the organization's RLS context, or the
+`admin_instance` connection (`crm/db_router.py`) whose role bypasses RLS. `OrgScopedAdmin`
+(`common/admin_mixins.py`) is the ORM half, and `common/tests/test_admin_scope.py` fails if an
+admin of an org-scoped model does not use it. See
+[PostgreSQL and RLS: The Django admin](../self-hosting/postgresql-and-rls.md#the-django-admin).
+
 ## Portal tokens
 
 !!! note "Which portal"

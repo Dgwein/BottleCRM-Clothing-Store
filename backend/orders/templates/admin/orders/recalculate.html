@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label='orders' %}">Orders</a>
+  &rsaquo; <a href="{% url 'admin:orders_order_changelist' %}">Orders</a>
+  &rsaquo; {{ title }}
+</div>
+{% endblock %}
+{% block content %}
+<div id="content-main">
+  <p>Due dates are fixed when a sale is imported. This sets them again for one
+  channel's orders from a sale date onwards, using the channel's current
+  <a href="{% url 'admin:orders_channelpreference_changelist' %}">preference</a>
+  and each product's current availability time: the items, the orders, and
+  their open preparation and packaging orders.</p>
+  <form method="post">
+    {% csrf_token %}
+    <fieldset class="module aligned">
+      {% for field in form %}
+        <div class="form-row">
+          {{ field.errors }}
+          {{ field.label_tag }} {{ field }}
+          {% if field.help_text %}<div class="help">{{ field.help_text }}</div>{% endif %}
+        </div>
+      {% endfor %}
+    </fieldset>
+    <div class="submit-row"><input type="submit" value="Recalculate" class="default"></div>
+  </form>
+</div>
+{% endblock %}

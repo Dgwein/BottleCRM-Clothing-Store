@@ -12,6 +12,7 @@ from django.utils import timezone
 
 from accounts.models import Account
 from cases.models import Case, TimeEntry
+from common.admin_scope import Scope
 from common.testing import set_modules_off
 from conftest import rls_org
 from contacts.models import Contact
@@ -425,6 +426,8 @@ class TestCancelFreesTime:
         model_admin = site._registry[Invoice]
         request = RequestFactory().post("/")
         request.user = admin_user
+        # As the admin runs it: working in the invoice's organization.
+        request.admin_scope = Scope(invoice.org)
         invoice.status = "Cancelled"
 
         model_admin.save_model(request, invoice, form=None, change=True)

@@ -31,7 +31,11 @@ def _org_scoped_models():
     return [
         model
         for model in apps.get_models()
-        if issubclass(model, BaseOrgModel) and not model._meta.abstract
+        if issubclass(model, BaseOrgModel)
+        and not model._meta.abstract
+        # A proxy has no table of its own: it shares its concrete model's,
+        # index included, and cannot declare indexes.
+        and not model._meta.proxy
     ]
 
 

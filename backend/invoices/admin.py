@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import admin
 
+from common.admin_mixins import OrgScopedAdmin
 from invoices.models import (
     Estimate,
     EstimateLineItem,
@@ -112,7 +113,9 @@ class IssuedLineAdminMixin:
         return Form
 
 
-class InvoiceLineItemInline(IssuedLinesInlineMixin, admin.TabularInline):
+class InvoiceLineItemInline(
+    IssuedLinesInlineMixin, OrgScopedAdmin, admin.TabularInline
+):
     model = InvoiceLineItem
     extra = 1
     fields = (
@@ -129,14 +132,14 @@ class InvoiceLineItemInline(IssuedLinesInlineMixin, admin.TabularInline):
     readonly_fields = ("total",)
 
 
-class PaymentInline(admin.TabularInline):
+class PaymentInline(OrgScopedAdmin, admin.TabularInline):
     model = Payment
     extra = 0
     fields = ("amount", "payment_date", "payment_method", "reference_number", "notes")
 
 
 @admin.register(Invoice)
-class InvoiceAdmin(IssuedAmountsReadOnlyMixin, admin.ModelAdmin):
+class InvoiceAdmin(IssuedAmountsReadOnlyMixin, OrgScopedAdmin, admin.ModelAdmin):
     amount_fields = INVOICE_AMOUNT_FIELDS
     list_display = (
         "invoice_number",
@@ -301,7 +304,7 @@ class InvoiceAdmin(IssuedAmountsReadOnlyMixin, admin.ModelAdmin):
 
 
 @admin.register(InvoiceHistory)
-class InvoiceHistoryAdmin(admin.ModelAdmin):
+class InvoiceHistoryAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "invoice",
         "invoice_number",
@@ -317,13 +320,15 @@ class InvoiceHistoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "name",
         "sku",
         "price",
         "currency",
         "category",
+        "stock",
+        "availability_days",
         "is_active",
         "org",
         "created_at",
@@ -335,7 +340,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(InvoiceLineItem)
-class InvoiceLineItemAdmin(IssuedLineAdminMixin, admin.ModelAdmin):
+class InvoiceLineItemAdmin(IssuedLineAdminMixin, OrgScopedAdmin, admin.ModelAdmin):
     document_field = "invoice"
     list_display = (
         "invoice",
@@ -355,7 +360,7 @@ class InvoiceLineItemAdmin(IssuedLineAdminMixin, admin.ModelAdmin):
 
 
 @admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
+class PaymentAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "invoice",
         "amount",
@@ -372,7 +377,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 @admin.register(InvoiceTemplate)
-class InvoiceTemplateAdmin(admin.ModelAdmin):
+class InvoiceTemplateAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "name",
         "is_default",
@@ -387,7 +392,9 @@ class InvoiceTemplateAdmin(admin.ModelAdmin):
 
 
 # Estimate Admin
-class EstimateLineItemInline(IssuedLinesInlineMixin, admin.TabularInline):
+class EstimateLineItemInline(
+    IssuedLinesInlineMixin, OrgScopedAdmin, admin.TabularInline
+):
     model = EstimateLineItem
     extra = 1
     fields = (
@@ -405,7 +412,7 @@ class EstimateLineItemInline(IssuedLinesInlineMixin, admin.TabularInline):
 
 
 @admin.register(Estimate)
-class EstimateAdmin(IssuedAmountsReadOnlyMixin, admin.ModelAdmin):
+class EstimateAdmin(IssuedAmountsReadOnlyMixin, OrgScopedAdmin, admin.ModelAdmin):
     amount_fields = ESTIMATE_AMOUNT_FIELDS
     list_display = (
         "estimate_number",
@@ -442,7 +449,7 @@ class EstimateAdmin(IssuedAmountsReadOnlyMixin, admin.ModelAdmin):
 
 
 @admin.register(EstimateLineItem)
-class EstimateLineItemAdmin(IssuedLineAdminMixin, admin.ModelAdmin):
+class EstimateLineItemAdmin(IssuedLineAdminMixin, OrgScopedAdmin, admin.ModelAdmin):
     document_field = "estimate"
     list_display = (
         "estimate",
@@ -460,7 +467,7 @@ class EstimateLineItemAdmin(IssuedLineAdminMixin, admin.ModelAdmin):
 
 
 # Recurring Invoice Admin
-class RecurringInvoiceLineItemInline(admin.TabularInline):
+class RecurringInvoiceLineItemInline(OrgScopedAdmin, admin.TabularInline):
     model = RecurringInvoiceLineItem
     extra = 1
     fields = (
@@ -476,7 +483,7 @@ class RecurringInvoiceLineItemInline(admin.TabularInline):
 
 
 @admin.register(RecurringInvoice)
-class RecurringInvoiceAdmin(admin.ModelAdmin):
+class RecurringInvoiceAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "title",
         "client_name",
@@ -498,7 +505,7 @@ class RecurringInvoiceAdmin(admin.ModelAdmin):
 
 
 @admin.register(RecurringInvoiceLineItem)
-class RecurringInvoiceLineItemAdmin(admin.ModelAdmin):
+class RecurringInvoiceLineItemAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "recurring_invoice",
         "description",
