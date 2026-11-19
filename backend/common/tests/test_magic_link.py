@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import pytest
 from django.core.cache import cache
+from django.test import override_settings
 from django.utils import timezone
 from rest_framework import status
 
@@ -49,6 +50,48 @@ class TestMagicLinkRequest:
                 self.url, {"email": "test@example.com"}, format="json"
             )
         assert MagicLinkToken.objects.filter(email="test@example.com").exists()
+
+    def test_dev_bypass_logs_in_an_allowlisted_existing_user(
+        self, unauthenticated_client, admin_user, admin_profile, org_a
+    ):
+        with override_settings(
+            MAGIC_LINK_DEV_BYPASS=True,
+            MAGIC_LINK_DEV_BYPASS_EMAILS=frozenset({admin_user.email}),
+            IS_DEV_ENV=True,
+            DEBUG=True,
+        ), patch("common.tasks.send_magic_link_email") as send_email:
+            response = unauthenticated_client.post(
+                self.url, {"email": admin_user.email}, format="json"
+            )
+
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["dev_login"] is True
+        assert "access_token" in response.data
+        assert "refresh_token" in response.data
+        assert response.data["current_org"]["id"] == str(org_a.id)
+        assert not MagicLinkToken.objects.filter(email=admin_user.email).exists()
+        send_email.delay.assert_not_called()
+
+    @pytest.mark.parametrize(
+        ("is_dev_env", "debug"), [(False, True), (True, False)]
+    )
+    def test_dev_bypass_requires_development_and_debug(
+        self, unauthenticated_client, admin_user, is_dev_env, debug
+    ):
+        with override_settings(
+            MAGIC_LINK_DEV_BYPASS=True,
+            MAGIC_LINK_DEV_BYPASS_EMAILS=frozenset({admin_user.email}),
+            IS_DEV_ENV=is_dev_env,
+            DEBUG=debug,
+        ), patch("common.tasks.send_magic_link_email") as send_email:
+            send_email.delay = lambda *a, **kw: None
+            response = unauthenticated_client.post(
+                self.url, {"email": admin_user.email}, format="json"
+            )
+
+        assert response.status_code == status.HTTP_200_OK
+        assert "dev_login" not in response.data
+        assert MagicLinkToken.objects.filter(email=admin_user.email).exists()
 
     def test_request_invalidates_previous_tokens(self, unauthenticated_client):
         """New request should invalidate existing unused tokens."""

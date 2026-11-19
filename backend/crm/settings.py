@@ -282,6 +282,20 @@ if _email_backend == "django.core.mail.backends.smtp.EmailBackend":
 
 AUTH_USER_MODEL = "common.User"
 
+# Optional shortcut for logging into explicitly allowlisted accounts while
+# developing without an email provider. The auth view also requires DEBUG and
+# ENV_TYPE=dev before it will issue tokens this way.
+MAGIC_LINK_DEV_BYPASS = (
+    os.environ.get("MAGIC_LINK_DEV_BYPASS", "false").lower() == "true"
+)
+MAGIC_LINK_DEV_BYPASS_EMAILS = frozenset(
+    email.strip().lower()
+    for email in os.environ.get(
+        "MAGIC_LINK_DEV_BYPASS_EMAILS", os.environ.get("ADMIN_EMAIL", "")
+    ).split(",")
+    if email.strip()
+)
+
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
 # Only when it exists. A source checkout keeps backend/static/ as a place to

@@ -80,7 +80,24 @@ jobs:
           DJANGO_SETTINGS_MODULE: crm.test_settings
           SECRET_KEY: test-secret-key-for-ci
           ADMIN_EMAIL: admin@test.com
-        run: uv run pytest -n auto -m "not postgres_only" --tb=short -v --contract-coverage
+        run: >-
+          uv run pytest -n auto -m "not postgres_only"
+          --deselect=interactions/tests/test_models.py::test_an_existing_org_is_stamped_when_the_column_is_added
+          --tb=short -v --contract-coverage
+
+      # This test rewinds the migration graph with MigrationExecutor. It passes
+      # on SQLite in a standalone process but can terminate an xdist worker, so
+      # keep the migration regression covered outside the parallel run.
+      - name: Run migration regression serially
+        working-directory: backend
+        env:
+          DJANGO_SETTINGS_MODULE: crm.test_settings
+          SECRET_KEY: test-secret-key-for-ci
+          ADMIN_EMAIL: admin@test.com
+        run: >-
+          uv run pytest -n 0
+          interactions/tests/test_models.py::test_an_existing_org_is_stamped_when_the_column_is_added
+          --tb=short -v
 
       - name: Generate coverage badge
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'

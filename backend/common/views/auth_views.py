@@ -793,7 +793,14 @@ class MagicLinkRequestView(FirstRefusalThrottleMixin, APIView):
         responses={
             200: inline_serializer(
                 name="MagicLinkRequestResponse",
-                fields={"message": serializers.CharField()},
+                fields={
+                    "message": serializers.CharField(),
+                    "dev_login": serializers.BooleanField(required=False),
+                    "access_token": serializers.CharField(required=False),
+                    "refresh_token": serializers.CharField(required=False),
+                    "user": serializer.UserDetailSerializer(required=False),
+                    "current_org": AuthOrgSerializer(required=False),
+                },
             )
         },
     )
@@ -812,6 +819,42 @@ class MagicLinkRequestView(FirstRefusalThrottleMixin, APIView):
 
         email = serializer_obj.validated_data["email"].lower()
         delivery = serializer_obj.validated_data.get("delivery", "link")
+
+        if (
+            settings.MAGIC_LINK_DEV_BYPASS
+            and settings.IS_DEV_ENV
+            and settings.DEBUG
+            and email in settings.MAGIC_LINK_DEV_BYPASS_EMAILS
+        ):
+            from common.audit_log import audit_log
+
+            user = User.objects.filter(email=email).first()
+            if user is not None:
+                if not user.is_active:
+                    audit_log.login_failure(email, "account_disabled", request)
+                    return generic_response
+
+                user.last_login = timezone.now()
+                user.save(update_fields=["last_login"])
+                profile = (
+                    Profile.objects.filter(user=user, is_active=True)
+                    .select_related("org")
+                    .first()
+                )
+                org = profile.org if profile else None
+                token = OrgAwareRefreshToken.for_user_and_org(user, org, profile)
+
+                audit_log.login_success(user, org, request)
+                response_data = {
+                    "message": "Development sign-in successful.",
+                    "dev_login": True,
+                    "access_token": str(token.access_token),
+                    "refresh_token": str(token),
+                    "user": serializer.UserDetailSerializer(user).data,
+                }
+                if org:
+                    response_data["current_org"] = _org_payload(org, profile)
+                return Response(response_data, status=status.HTTP_200_OK)
 
         # Rate limit: max 5 tokens per email per hour
         one_hour_ago = timezone.now() - timedelta(hours=1)

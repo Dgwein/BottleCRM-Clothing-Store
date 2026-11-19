@@ -211,7 +211,7 @@ async function generateOAuthUrl(cookies: Cookies): Promise<{ google_url: string 
 }
 
 export const actions: Actions = {
-  default: async ({ request, getClientAddress }) => {
+  default: async ({ request, getClientAddress, cookies }) => {
     const formData = await request.formData();
     const email = String(formData.get('email') ?? '').trim();
 
@@ -219,9 +219,10 @@ export const actions: Actions = {
       return { success: false, error: 'Email is required' };
     }
 
+    let devLogin: Schemas['MagicLinkRequestResponse'] | undefined;
     try {
       const apiUrl = publicEnv.PUBLIC_DJANGO_API_URL;
-      await axios.post<Schemas['MagicLinkRequestResponse']>(
+      const response = await axios.post<Schemas['MagicLinkRequestResponse']>(
         `${apiUrl}/api/auth/magic-link/request/`,
         { email } satisfies Schemas['MagicLinkRequestRequest'],
         {
@@ -233,10 +234,26 @@ export const actions: Actions = {
           timeout: 10000
         }
       );
-      return { success: true };
+      devLogin = response.data;
     } catch {
       // Always show success to user (backend also returns 200 always)
       return { success: true };
     }
+
+    if (devLogin?.dev_login && devLogin.access_token && devLogin.refresh_token) {
+      cookies.set(
+        'jwt_access',
+        devLogin.access_token,
+        getCookieOptions(60 * 60 * 24)
+      );
+      cookies.set(
+        'jwt_refresh',
+        devLogin.refresh_token,
+        getCookieOptions(60 * 60 * 24 * 365)
+      );
+      redirect(303, '/org');
+    }
+
+    return { success: true };
   }
 };

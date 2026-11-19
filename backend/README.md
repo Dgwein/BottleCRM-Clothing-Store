@@ -505,6 +505,8 @@ uv lock --upgrade
 | `DEFAULT_FROM_EMAIL` | Default sender email |
 | `ADMIN_EMAIL` | Admin notification email |
 | `EMAIL_BACKEND` | Django email backend. Defaults to the console backend; `ENV_TYPE=prod` switches it to AWS SES. For SMTP, see [Email and Celery](../docs/self-hosting/email-and-celery.md) |
+| `MAGIC_LINK_DEV_BYPASS` | Enable direct sign-in for allowlisted accounts only when `ENV_TYPE=dev` and `DEBUG=True`; defaults to `False` |
+| `MAGIC_LINK_DEV_BYPASS_EMAILS` | Comma-separated emails allowed to use the development sign-in shortcut; defaults to `ADMIN_EMAIL` |
 | `AWS_SES_REGION_NAME` | AWS SES region |
 | `AWS_SES_REGION_ENDPOINT` | AWS SES endpoint |
 | `CELERY_BROKER_URL` | Redis URL for Celery broker |

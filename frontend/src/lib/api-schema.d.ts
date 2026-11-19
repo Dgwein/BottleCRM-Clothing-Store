@@ -12912,6 +12912,11 @@ export interface components {
         };
         MagicLinkRequestResponse: {
             message: string;
+            dev_login?: boolean;
+            access_token?: string;
+            refresh_token?: string;
+            user?: components["schemas"]["UserDetail"];
+            current_org?: components["schemas"]["AuthOrg"];
         };
         /** @description Serializer for verifying an OTP code (mobile flow). */
         MagicLinkVerifyCodeRequest: {
