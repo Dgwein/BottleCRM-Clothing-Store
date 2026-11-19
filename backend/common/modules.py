@@ -325,6 +325,7 @@ NAMESPACE_MODULES: dict[str, Requires] = {
     "api_automation": CORE,
     # Each request is checked against its record's module in the view.
     "api_interactions": CORE,
+    "api_fulfillment": CORE,
     "public_webforms": CORE,
 }
 

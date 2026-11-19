@@ -79,6 +79,8 @@ API_RESOURCES = frozenset(
         # scope reaches it, the whole root is in CREDENTIAL_PATHS below.
         "devices",
         "documents",
+        # Sales channels, delivery options and the dispatch of packed sales.
+        "fulfillment",
         # Calls, meetings and messages logged on a record, and enquiries.
         "interactions",
         "invoices",

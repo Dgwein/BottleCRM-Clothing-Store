@@ -161,6 +161,27 @@ Interactive versions of the same schema are served by a running backend at
 | `/api/documents/` | GET, POST |
 | `/api/documents/{id}/` | DELETE, GET, PATCH, PUT |
 | `/api/documents/{id}/download/` | GET |
+| `/api/fulfillment/channels/` | GET, POST |
+| `/api/fulfillment/channels/{id}/` | DELETE, GET, PATCH |
+| `/api/fulfillment/delivery-options/` | GET, POST |
+| `/api/fulfillment/delivery-options/{id}/` | DELETE, GET, PATCH |
+| `/api/fulfillment/delivery-options/{id}/days/` | GET, POST |
+| `/api/fulfillment/delivery-options/{id}/days/{day_pk}/` | DELETE |
+| `/api/fulfillment/dispatch-orders/` | GET, POST |
+| `/api/fulfillment/dispatch-orders/manual/` | POST |
+| `/api/fulfillment/dispatch-orders/{id}/` | DELETE, GET |
+| `/api/fulfillment/dispatch-orders/{id}/close/` | POST |
+| `/api/fulfillment/dispatch-plan/` | GET |
+| `/api/fulfillment/packaging-orders/{id}/complete/` | POST |
+| `/api/fulfillment/preparation-orders/{id}/complete/` | POST |
+| `/api/fulfillment/queue-assignments/` | GET, POST |
+| `/api/fulfillment/queue-assignments/{id}/` | DELETE, PATCH |
+| `/api/fulfillment/queues/` | GET |
+| `/api/fulfillment/queues/delivery/` | GET |
+| `/api/fulfillment/queues/packaging/` | GET |
+| `/api/fulfillment/queues/preparation/` | GET |
+| `/api/fulfillment/sales/` | GET, POST |
+| `/api/fulfillment/sales/{id}/` | GET |
 | `/api/interactions/` | GET, POST |
 | `/api/interactions/{id}/` | DELETE, PATCH |
 | `/api/invoices/` | GET, POST |

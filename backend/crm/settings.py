@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     "invoices",
     "catalog",
     "orders",
+    "fulfillment",
     "business_hours",
     "macros",
     "webforms",
