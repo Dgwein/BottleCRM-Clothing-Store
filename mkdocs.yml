@@ -62,6 +62,7 @@ nav:
       - Private apps: features/private-apps.md
       - Projects: features/projects.md
       - Proposals: features/proposals.md
+      - Dispatch: features/dispatch.md
   - Self-hosting:
       - Requirements: self-hosting/requirements.md
       - Docker: self-hosting/docker.md
@@ -95,6 +96,7 @@ nav:
       - Macros: api/macros.md
       - Tasks: api/tasks.md
       - Invoices and estimates: api/invoices.md
+      - Fulfillment: api/fulfillment.md
       - CSV exports: api/exports.md
       - Saved views: api/saved-views.md
       - Security audit log: api/audit-log.md

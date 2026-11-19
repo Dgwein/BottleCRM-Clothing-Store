@@ -2344,6 +2344,369 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/fulfillment/channels/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_channels_list"];
+        put?: never;
+        post: operations["fulfillment_channels_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/channels/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_channels_retrieve"];
+        put?: never;
+        post?: never;
+        delete: operations["fulfillment_channels_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["fulfillment_channels_partial_update"];
+        trace?: never;
+    };
+    "/api/fulfillment/delivery-options/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_delivery_options_list"];
+        put?: never;
+        post: operations["fulfillment_delivery_options_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/delivery-options/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_delivery_options_retrieve"];
+        put?: never;
+        post?: never;
+        delete: operations["fulfillment_delivery_options_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["fulfillment_delivery_options_partial_update"];
+        trace?: never;
+    };
+    "/api/fulfillment/delivery-options/{id}/days/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description An option's dated free and extra working days. */
+        get: operations["fulfillment_delivery_option_days_list"];
+        put?: never;
+        /** @description An option's dated free and extra working days. */
+        post: operations["fulfillment_delivery_options_days_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/delivery-options/{id}/days/{day_pk}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["fulfillment_delivery_options_days_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/dispatch-orders/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_dispatch_orders_list"];
+        put?: never;
+        /**
+         * @description Create or recalculate the automatic dispatch orders: every ready sale
+         *     not on a person's order, planned by the rules.
+         */
+        post: operations["fulfillment_dispatch_orders_recalculate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/dispatch-orders/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_dispatch_orders_retrieve"];
+        put?: never;
+        post?: never;
+        /** @description Release an open dispatch order: its sales are ready again. */
+        delete: operations["fulfillment_dispatch_orders_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/dispatch-orders/{id}/close/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["fulfillment_dispatch_orders_close_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/dispatch-orders/manual/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description A dispatch order from sales a person chose (``MANUAL``), or from chosen
+         *     sales with the rest of the run filled by the plan (``HYBRID``).
+         */
+        post: operations["fulfillment_dispatch_orders_manual_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/dispatch-plan/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description The plan from the current values, as a preview: it writes nothing.
+         *     Dispatch orders are written by `POST /dispatch-orders/`.
+         */
+        get: operations["fulfillment_dispatch_plan_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/packaging-orders/{id}/complete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["fulfillment_packaging_orders_complete_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/preparation-orders/{id}/complete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["fulfillment_preparation_orders_complete_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/queue-assignments/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Which teams handle which order types. Admins only. */
+        get: operations["fulfillment_queue_assignments_list"];
+        put?: never;
+        /** @description Which teams handle which order types. Admins only. */
+        post: operations["fulfillment_queue_assignments_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/queue-assignments/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["fulfillment_queue_assignments_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["fulfillment_queue_assignments_partial_update"];
+        trace?: never;
+    };
+    "/api/fulfillment/queues/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description The queues this app serves that the caller's teams may see, with the
+         *     level they hold. Every member with access to a type shares its queue.
+         */
+        get: operations["fulfillment_queues_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/queues/delivery/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description The delivery queue: open dispatch orders by departure, and how many
+         *     ready sales are on none yet.
+         */
+        get: operations["fulfillment_queues_delivery_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/queues/packaging/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The preparation or the packaging queue. */
+        get: operations["fulfillment_queues_packaging_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/queues/preparation/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The preparation or the packaging queue. */
+        get: operations["fulfillment_queues_preparation_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/sales/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_sales_list"];
+        put?: never;
+        post: operations["fulfillment_sales_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/fulfillment/sales/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["fulfillment_sales_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/interactions/": {
         parameters: {
             query?: never;
@@ -5935,6 +6298,13 @@ export interface components {
             /** @description Profile ids. Each must be an active member of the caller's org, or the request is refused with a 400. */
             lead_assigned_to?: string[];
         };
+        /**
+         * @description * `VIEW` - View
+         *     * `HANDLE` - Handle
+         *     * `CLOSE` - Close
+         * @enum {string}
+         */
+        AccessEnum: "VIEW" | "HANDLE" | "CLOSE";
         AccessTokenListResponse: {
             error: boolean;
             tokens: components["schemas"]["PersonalAccessTokenList"][];
@@ -9557,6 +9927,200 @@ export interface components {
          * @enum {string}
          */
         DeliveryEnum: "link" | "code";
+        /**
+         * @description Limits each related field in ``scoped`` to the org in the context, so an
+         *     id from another org reads as one that does not exist.
+         */
+        DeliveryOption: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            kind: components["schemas"]["DeliveryOptionKindEnum"];
+            /**
+             * Format: uuid
+             * @description Only this channel's sales may use it. Blank serves every channel.
+             */
+            channel: string | null;
+            readonly channel_name: string | null;
+            location: string;
+            weekday: components["schemas"]["WeekdayEnum"] | components["schemas"]["BlankEnum"];
+            /** Format: time */
+            departure_time: string | null;
+            /** @description From departure until the committed delivery is fulfilled. */
+            dispatch_minutes: number;
+            /** Format: decimal */
+            cost: string;
+            /** @description Most packages one departure can take. Blank has no limit. */
+            capacity: number | null;
+            is_active: boolean;
+            /**
+             * Format: time
+             * @description When a Monday opens for this option; blank when it does not work.
+             */
+            monday_opens: string | null;
+            /**
+             * Format: time
+             * @description When a Tuesday opens for this option; blank when it does not work.
+             */
+            tuesday_opens: string | null;
+            /**
+             * Format: time
+             * @description When a Wednesday opens for this option; blank when it does not work.
+             */
+            wednesday_opens: string | null;
+            /**
+             * Format: time
+             * @description When a Thursday opens for this option; blank when it does not work.
+             */
+            thursday_opens: string | null;
+            /**
+             * Format: time
+             * @description When a Friday opens for this option; blank when it does not work.
+             */
+            friday_opens: string | null;
+            /**
+             * Format: time
+             * @description When a Saturday opens for this option; blank when it does not work.
+             */
+            saturday_opens: string | null;
+            /**
+             * Format: time
+             * @description When a Sunday opens for this option; blank when it does not work.
+             */
+            sunday_opens: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /**
+             * Last Modified At
+             * Format: date-time
+             */
+            readonly updated_at: string;
+        };
+        DeliveryOptionDay: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date: string;
+            kind: components["schemas"]["DeliveryOptionDayKindEnum"];
+            /**
+             * Format: time
+             * @description For a working day: when it opens. Blank is midnight.
+             */
+            opens_at: string | null;
+            note: string;
+        };
+        /**
+         * @description * `FREE` - Free
+         *     * `WORKING` - Working
+         * @enum {string}
+         */
+        DeliveryOptionDayKindEnum: "FREE" | "WORKING";
+        DeliveryOptionDayListResponse: {
+            days: components["schemas"]["DeliveryOptionDay"][];
+        };
+        DeliveryOptionDayRequest: {
+            /** Format: date */
+            date: string;
+            kind: components["schemas"]["DeliveryOptionDayKindEnum"];
+            /**
+             * Format: time
+             * @description For a working day: when it opens. Blank is midnight.
+             */
+            opens_at?: string | null;
+            note?: string;
+        };
+        /**
+         * @description * `DOOR_TO_DOOR` - Door to door
+         *     * `CHANNEL_PICKUP` - Picked up by the channel
+         *     * `CHANNEL_AGENCY` - Dropped at the channel's agency
+         *     * `COMMON_DISPATCH` - Common dispatch
+         * @enum {string}
+         */
+        DeliveryOptionKindEnum: "DOOR_TO_DOOR" | "CHANNEL_PICKUP" | "CHANNEL_AGENCY" | "COMMON_DISPATCH";
+        DeliveryOptionListResponse: {
+            delivery_options: components["schemas"]["DeliveryOption"][];
+        };
+        /**
+         * @description Limits each related field in ``scoped`` to the org in the context, so an
+         *     id from another org reads as one that does not exist.
+         */
+        DeliveryOptionRequest: {
+            name: string;
+            kind: components["schemas"]["DeliveryOptionKindEnum"];
+            /**
+             * Format: uuid
+             * @description Only this channel's sales may use it. Blank serves every channel.
+             */
+            channel?: string | null;
+            location?: string;
+            weekday?: components["schemas"]["WeekdayEnum"] | components["schemas"]["BlankEnum"];
+            /** Format: time */
+            departure_time?: string | null;
+            /** @description From departure until the committed delivery is fulfilled. */
+            dispatch_minutes?: number;
+            /** Format: decimal */
+            cost?: string;
+            /** @description Most packages one departure can take. Blank has no limit. */
+            capacity?: number | null;
+            is_active?: boolean;
+            /**
+             * Format: time
+             * @description When a Monday opens for this option; blank when it does not work.
+             */
+            monday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Tuesday opens for this option; blank when it does not work.
+             */
+            tuesday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Wednesday opens for this option; blank when it does not work.
+             */
+            wednesday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Thursday opens for this option; blank when it does not work.
+             */
+            thursday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Friday opens for this option; blank when it does not work.
+             */
+            friday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Saturday opens for this option; blank when it does not work.
+             */
+            saturday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Sunday opens for this option; blank when it does not work.
+             */
+            sunday_opens?: string | null;
+            /**
+             * @description On create: copy the org's business hours (weekly opening times and holidays from today on) as this option's own working days.
+             * @default false
+             */
+            import_business_hours?: boolean;
+        };
+        DeliveryOptionSummary: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            kind: string;
+            location: string;
+            /** Format: decimal */
+            cost: string;
+            capacity: number | null;
+        };
+        DeliveryQueueResponse: {
+            count: number;
+            limit: number;
+            offset: number;
+            dispatch_orders: components["schemas"]["DispatchOrder"][];
+            unplanned_sales: number;
+        };
         /** @description An estimate's deposit invoice, on its list row and the convert answer. */
         DepositInvoice: {
             /** Format: uuid */
@@ -9587,6 +10151,99 @@ export interface components {
          * @enum {string}
          */
         DiscountTypeEnum: "PERCENTAGE" | "FIXED";
+        DispatchOrder: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly delivery_option: string;
+            readonly delivery_option_name: string;
+            readonly kind: string;
+            readonly location: string;
+            readonly capacity: number | null;
+            readonly status: components["schemas"]["DispatchOrderStatusEnum"];
+            readonly mode: components["schemas"]["DispatchOrderModeEnum"];
+            /** Format: date-time */
+            readonly departs_at: string;
+            /** Format: decimal */
+            readonly cost: string;
+            readonly items: components["schemas"]["DispatchOrderItem"][];
+            /** Format: date-time */
+            readonly closed_at: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /**
+             * Last Modified At
+             * Format: date-time
+             */
+            readonly updated_at: string;
+        };
+        DispatchOrderItem: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly sale: string;
+            /** Format: uuid */
+            readonly order: string;
+            readonly order_name: string;
+            /** Format: uuid */
+            readonly channel: string;
+            readonly channel_name: string;
+            /** Format: date-time */
+            readonly committed_delivery_at: string;
+            /** Format: date-time */
+            readonly estimated_delivery_at: string;
+            readonly late: boolean;
+            /** Format: decimal */
+            readonly cost_share: string;
+            /** Format: decimal */
+            readonly penalty: string;
+        };
+        DispatchOrderListResponse: {
+            count: number;
+            limit: number;
+            offset: number;
+            dispatch_orders: components["schemas"]["DispatchOrder"][];
+        };
+        /**
+         * @description * `AUTO` - Automatic
+         *     * `MANUAL` - Manual
+         *     * `HYBRID` - Hybrid
+         * @enum {string}
+         */
+        DispatchOrderModeEnum: "AUTO" | "MANUAL" | "HYBRID";
+        /**
+         * @description * `OPEN` - Open
+         *     * `CLOSED` - Closed
+         * @enum {string}
+         */
+        DispatchOrderStatusEnum: "OPEN" | "CLOSED";
+        DispatchPlan: {
+            /** Format: date-time */
+            generated_at: string;
+            currency: string;
+            exhaustive: boolean;
+            /** Format: decimal */
+            total_cost: string;
+            /** Format: decimal */
+            total_penalty: string;
+            /** Format: decimal */
+            total: string;
+            departures: components["schemas"]["PlanDeparture"][];
+            assignments: components["schemas"]["PlanAssignment"][];
+            unassigned: components["schemas"]["PlanSale"][];
+        };
+        DispatchRecalculation: {
+            /** Format: date-time */
+            generated_at: string;
+            currency: string;
+            exhaustive: boolean;
+            dispatch_orders: components["schemas"]["DispatchOrder"][];
+            unassigned: components["schemas"]["PlanSale"][];
+        };
+        DispatchRecalculationRequestRequest: {
+            /** @default false */
+            allow_non_working_days?: boolean;
+        };
         Document: {
             /** Format: uuid */
             readonly id: string;
@@ -12074,6 +12731,24 @@ export interface components {
             message: string;
         };
         /**
+         * @description * `MANUAL` - Manual
+         *     * `HYBRID` - Hybrid
+         * @enum {string}
+         */
+        ManualDispatchModeEnum: "MANUAL" | "HYBRID";
+        /**
+         * @description A dispatch order from chosen sales (``MANUAL``), or from chosen sales
+         *     with the run's remaining room filled by the plan (``HYBRID``).
+         */
+        ManualDispatchRequest: {
+            mode: components["schemas"]["ManualDispatchModeEnum"];
+            sales: string[];
+            /** Format: uuid */
+            delivery_option?: string | null;
+            /** @default false */
+            allow_non_working_days?: boolean;
+        };
+        /**
          * @description * `Question` - Question
          *     * `Incident` - Incident
          *     * `Problem` - Problem
@@ -12096,12 +12771,6 @@ export interface components {
             /** Format: uuid */
             id: string;
         };
-        /**
-         * @description * `status` - status
-         *     * `pipeline` - pipeline
-         * @enum {string}
-         */
-        ModeEnum: "status" | "pipeline";
         NextActivity: {
             /** Format: uuid */
             id: string;
@@ -12584,6 +13253,14 @@ export interface components {
             error: boolean;
             message: string;
         };
+        /**
+         * @description * `PREPARATION` - Preparation
+         *     * `INSPECTION` - Inspection
+         *     * `PACKAGING` - Packaging
+         *     * `DELIVERY` - Delivery
+         * @enum {string}
+         */
+        OrderTypeEnum: "PREPARATION" | "INSPECTION" | "PACKAGING" | "DELIVERY";
         /** @description Response-only: one `OrgAccessTokenListView` row. */
         OrgAccessToken: {
             /** Format: uuid */
@@ -12884,6 +13561,13 @@ export interface components {
             description: string;
             version: number;
         };
+        PackagingOrder: {
+            /** Format: uuid */
+            id: string;
+            status: components["schemas"]["Status51cEnum"];
+            /** Format: date-time */
+            completed_at: string | null;
+        };
         /**
          * @description The request body `common/views/settings_views.py` actually reads.
          *
@@ -13173,6 +13857,70 @@ export interface components {
             kind?: components["schemas"]["DealStageKindEnum"];
             expected_days?: number | null;
             warning_days?: number | null;
+        };
+        /**
+         * @description Limits each related field in ``scoped`` to the org in the context, so an
+         *     id from another org reads as one that does not exist.
+         */
+        PatchedDeliveryOptionRequest: {
+            name?: string;
+            kind?: components["schemas"]["DeliveryOptionKindEnum"];
+            /**
+             * Format: uuid
+             * @description Only this channel's sales may use it. Blank serves every channel.
+             */
+            channel?: string | null;
+            location?: string;
+            weekday?: components["schemas"]["WeekdayEnum"] | components["schemas"]["BlankEnum"];
+            /** Format: time */
+            departure_time?: string | null;
+            /** @description From departure until the committed delivery is fulfilled. */
+            dispatch_minutes?: number;
+            /** Format: decimal */
+            cost?: string;
+            /** @description Most packages one departure can take. Blank has no limit. */
+            capacity?: number | null;
+            is_active?: boolean;
+            /**
+             * Format: time
+             * @description When a Monday opens for this option; blank when it does not work.
+             */
+            monday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Tuesday opens for this option; blank when it does not work.
+             */
+            tuesday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Wednesday opens for this option; blank when it does not work.
+             */
+            wednesday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Thursday opens for this option; blank when it does not work.
+             */
+            thursday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Friday opens for this option; blank when it does not work.
+             */
+            friday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Saturday opens for this option; blank when it does not work.
+             */
+            saturday_opens?: string | null;
+            /**
+             * Format: time
+             * @description When a Sunday opens for this option; blank when it does not work.
+             */
+            sunday_opens?: string | null;
+            /**
+             * @description On create: copy the org's business hours (weekly opening times and holidays from today on) as this option's own working days.
+             * @default false
+             */
+            import_business_hours?: boolean;
         };
         PatchedDocumentEditSwaggerRequest: {
             title?: string | null;
@@ -13808,6 +14556,16 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        /**
+         * @description Limits each related field in ``scoped`` to the org in the context, so an
+         *     id from another org reads as one that does not exist.
+         */
+        PatchedQueueAssignmentRequest: {
+            /** Format: uuid */
+            team?: string;
+            order_type?: components["schemas"]["OrderTypeEnum"];
+            access?: components["schemas"]["AccessEnum"];
+        };
         /** @description Serializer for creating/updating Recurring Invoices */
         PatchedRecurringInvoiceBodyRequest: {
             title?: string;
@@ -13900,6 +14658,14 @@ export interface components {
             actions?: unknown;
             is_active?: boolean;
             position?: number;
+        };
+        PatchedSalesChannelRequest: {
+            name?: string;
+            /**
+             * Format: decimal
+             * @description Charged once per sale that reaches the buyer after the committed time.
+             */
+            late_penalty?: string;
         };
         /**
          * @description Write serializer for SalesGoal (create + partial update).
@@ -14240,6 +15006,49 @@ export interface components {
             /** Format: date-time */
             readonly revoked_at: string | null;
         };
+        PlanAssignment: {
+            /** Format: uuid */
+            sale: string;
+            /** Format: uuid */
+            order: string;
+            order_name: string;
+            /** Format: uuid */
+            channel: string;
+            channel_name: string;
+            /** Format: date-time */
+            committed_delivery_at: string;
+            /** Format: uuid */
+            delivery_option: string;
+            /** Format: date-time */
+            departs_at: string;
+            /** Format: date-time */
+            arrives_at: string;
+            late: boolean;
+            /** Format: decimal */
+            cost_share: string;
+            /** Format: decimal */
+            penalty: string;
+        };
+        PlanDeparture: {
+            delivery_option: components["schemas"]["DeliveryOptionSummary"];
+            /** Format: date-time */
+            departs_at: string;
+            /** Format: date-time */
+            arrives_at: string;
+            sales: string[];
+        };
+        PlanSale: {
+            /** Format: uuid */
+            sale: string;
+            /** Format: uuid */
+            order: string;
+            order_name: string;
+            /** Format: uuid */
+            channel: string;
+            channel_name: string;
+            /** Format: date-time */
+            committed_delivery_at: string;
+        };
         /**
          * @description * `android` - Android
          *     * `ios` - iOS
@@ -14408,6 +15217,21 @@ export interface components {
              * Format: date-time
              */
             readonly updated_at: string;
+        };
+        PreparationInputRequest: {
+            description: string;
+            /** Format: uuid */
+            line_item?: string | null;
+        };
+        PreparationOrder: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly line_item: string | null;
+            readonly description: string;
+            readonly status: components["schemas"]["Status51cEnum"];
+            /** Format: date-time */
+            readonly completed_at: string | null;
         };
         /**
          * @description * `generic` - Generic
@@ -15043,6 +15867,62 @@ export interface components {
             payment_method: string;
         };
         /**
+         * @description Limits each related field in ``scoped`` to the org in the context, so an
+         *     id from another org reads as one that does not exist.
+         */
+        QueueAssignment: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            team: string;
+            readonly team_name: string;
+            order_type: components["schemas"]["OrderTypeEnum"];
+            access: components["schemas"]["AccessEnum"];
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        QueueAssignmentListResponse: {
+            assignments: components["schemas"]["QueueAssignment"][];
+        };
+        /**
+         * @description Limits each related field in ``scoped`` to the org in the context, so an
+         *     id from another org reads as one that does not exist.
+         */
+        QueueAssignmentRequest: {
+            /** Format: uuid */
+            team: string;
+            order_type: components["schemas"]["OrderTypeEnum"];
+            access?: components["schemas"]["AccessEnum"];
+        };
+        /** @description A preparation or packaging order waiting in its queue. */
+        QueueItem: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            sale: string;
+            /** Format: uuid */
+            order: string;
+            order_name: string;
+            /** Format: uuid */
+            channel: string;
+            channel_name: string;
+            /** Format: date-time */
+            committed_delivery_at: string;
+            readonly description: string;
+            /** Format: uuid */
+            readonly line_item: string | null;
+            /** Format: date-time */
+            created_at: string;
+        };
+        QueueListResponse: {
+            queues: components["schemas"]["QueueSummary"][];
+        };
+        QueueSummary: {
+            order_type: components["schemas"]["OrderTypeEnum"];
+            access: string;
+            pending: number;
+        };
+        /**
          * @description * `HOT` - Hot
          *     * `WARM` - Warm
          *     * `COLD` - Cold
@@ -15585,6 +16465,88 @@ export interface components {
             Signature: string;
             SigningCertURL: string;
         };
+        Sale: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly order: string;
+            readonly order_name: string;
+            readonly order_number: string;
+            readonly order_status: string;
+            /** Format: uuid */
+            readonly channel: string;
+            readonly channel_name: string;
+            /** Format: date-time */
+            readonly committed_delivery_at: string;
+            readonly preparation_orders: components["schemas"]["PreparationOrder"][];
+            readonly packaging_order: components["schemas"]["PackagingOrder"] | null;
+            readonly dispatch: components["schemas"]["SaleDispatch"] | null;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        /**
+         * @description Limits each related field in ``scoped`` to the org in the context, so an
+         *     id from another org reads as one that does not exist.
+         */
+        SaleCreateRequest: {
+            /** Format: uuid */
+            order: string;
+            /** Format: uuid */
+            channel: string;
+            /** Format: date-time */
+            committed_delivery_at: string;
+            preparations?: components["schemas"]["PreparationInputRequest"][];
+        };
+        /** @description Where a sale stands on its dispatch order; final once that is closed. */
+        SaleDispatch: {
+            /** Format: uuid */
+            dispatch_order: string;
+            status: string;
+            delivery_option_name: string;
+            /** Format: date-time */
+            departs_at: string;
+            /** Format: date-time */
+            estimated_delivery_at: string;
+            late: boolean;
+            /** Format: decimal */
+            cost_share: string;
+            /** Format: decimal */
+            penalty: string;
+        };
+        SaleListResponse: {
+            count: number;
+            limit: number;
+            offset: number;
+            sales: components["schemas"]["Sale"][];
+        };
+        SalesChannel: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            /**
+             * Format: decimal
+             * @description Charged once per sale that reaches the buyer after the committed time.
+             */
+            late_penalty: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /**
+             * Last Modified At
+             * Format: date-time
+             */
+            readonly updated_at: string;
+        };
+        SalesChannelListResponse: {
+            channels: components["schemas"]["SalesChannel"][];
+        };
+        SalesChannelRequest: {
+            name: string;
+            /**
+             * Format: decimal
+             * @description Charged once per sale that reaches the buyer after the committed time.
+             */
+            late_penalty?: string;
+        };
         SalesGoal: {
             /** Format: uuid */
             readonly id: string;
@@ -16054,6 +17016,12 @@ export interface components {
          */
         Status4adEnum: "Draft" | "Sent" | "Viewed" | "Accepted" | "Declined" | "Expired";
         /**
+         * @description * `PENDING` - Pending
+         *     * `COMPLETED` - Completed
+         * @enum {string}
+         */
+        Status51cEnum: "PENDING" | "COMPLETED";
+        /**
          * @description * `active` - Active
          *     * `on_hold` - On hold
          *     * `completed` - Completed
@@ -16318,10 +17286,16 @@ export interface components {
         };
         TaskKanbanResponse: {
             columns: components["schemas"]["TaskKanbanColumn"][];
-            mode: components["schemas"]["ModeEnum"];
+            mode: components["schemas"]["TaskKanbanResponseModeEnum"];
             pipeline: components["schemas"]["TaskPipelineList"] | null;
             total_tasks: number;
         };
+        /**
+         * @description * `status` - status
+         *     * `pipeline` - pipeline
+         * @enum {string}
+         */
+        TaskKanbanResponseModeEnum: "status" | "pipeline";
         /**
          * @description Slim payload for /api/tasks/ list pages. Drops the comment/attachment
          *     bodies (sometimes hundreds of rows per task) and the contacts/teams M2Ms
@@ -17256,6 +18230,24 @@ export interface components {
         WebhookRotateSecretResponse: {
             secret: string;
             secret_hint: string;
+        };
+        /**
+         * @description * `MON` - Monday
+         *     * `TUE` - Tuesday
+         *     * `WED` - Wednesday
+         *     * `THU` - Thursday
+         *     * `FRI` - Friday
+         *     * `SAT` - Saturday
+         *     * `SUN` - Sunday
+         * @enum {string}
+         */
+        WeekdayEnum: "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN";
+        WorkQueueResponse: {
+            count: number;
+            limit: number;
+            offset: number;
+            order_type: string;
+            items: components["schemas"]["QueueItem"][];
         };
         /**
          * @description A deal's line on a board card: the mobile card counts them. Plain
@@ -22001,6 +22993,765 @@ export interface operations {
                 };
                 content: {
                     "application/octet-stream": string;
+                };
+            };
+        };
+    };
+    fulfillment_channels_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesChannelListResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_channels_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SalesChannelRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["SalesChannelRequest"];
+                "multipart/form-data": components["schemas"]["SalesChannelRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesChannel"];
+                };
+            };
+        };
+    };
+    fulfillment_channels_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesChannel"];
+                };
+            };
+        };
+    };
+    fulfillment_channels_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    fulfillment_channels_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedSalesChannelRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedSalesChannelRequest"];
+                "multipart/form-data": components["schemas"]["PatchedSalesChannelRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesChannel"];
+                };
+            };
+        };
+    };
+    fulfillment_delivery_options_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryOptionListResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_delivery_options_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeliveryOptionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["DeliveryOptionRequest"];
+                "multipart/form-data": components["schemas"]["DeliveryOptionRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryOption"];
+                };
+            };
+        };
+    };
+    fulfillment_delivery_options_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryOption"];
+                };
+            };
+        };
+    };
+    fulfillment_delivery_options_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    fulfillment_delivery_options_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedDeliveryOptionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedDeliveryOptionRequest"];
+                "multipart/form-data": components["schemas"]["PatchedDeliveryOptionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryOption"];
+                };
+            };
+        };
+    };
+    fulfillment_delivery_option_days_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryOptionDayListResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_delivery_options_days_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeliveryOptionDayRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["DeliveryOptionDayRequest"];
+                "multipart/form-data": components["schemas"]["DeliveryOptionDayRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryOptionDay"];
+                };
+            };
+        };
+    };
+    fulfillment_delivery_options_days_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                day_pk: string;
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    fulfillment_dispatch_orders_list: {
+        parameters: {
+            query?: {
+                channel?: string[];
+                delivery_option?: string[];
+                departs_from?: string;
+                departs_to?: string;
+                limit?: number;
+                mode?: ("AUTO" | "HYBRID" | "MANUAL")[];
+                offset?: number;
+                ordering?: "-departs" | "departs";
+                search?: string;
+                status?: ("CLOSED" | "OPEN")[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DispatchOrderListResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_dispatch_orders_recalculate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DispatchRecalculationRequestRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["DispatchRecalculationRequestRequest"];
+                "multipart/form-data": components["schemas"]["DispatchRecalculationRequestRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DispatchRecalculation"];
+                };
+            };
+        };
+    };
+    fulfillment_dispatch_orders_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DispatchOrder"];
+                };
+            };
+        };
+    };
+    fulfillment_dispatch_orders_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    fulfillment_dispatch_orders_close_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DispatchOrder"];
+                };
+            };
+        };
+    };
+    fulfillment_dispatch_orders_manual_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ManualDispatchRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ManualDispatchRequest"];
+                "multipart/form-data": components["schemas"]["ManualDispatchRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DispatchOrder"];
+                };
+            };
+        };
+    };
+    fulfillment_dispatch_plan_retrieve: {
+        parameters: {
+            query?: {
+                allow_non_working_days?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DispatchPlan"];
+                };
+            };
+        };
+    };
+    fulfillment_packaging_orders_complete_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Sale"];
+                };
+            };
+        };
+    };
+    fulfillment_preparation_orders_complete_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Sale"];
+                };
+            };
+        };
+    };
+    fulfillment_queue_assignments_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueAssignmentListResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_queue_assignments_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QueueAssignmentRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["QueueAssignmentRequest"];
+                "multipart/form-data": components["schemas"]["QueueAssignmentRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueAssignment"];
+                };
+            };
+        };
+    };
+    fulfillment_queue_assignments_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    fulfillment_queue_assignments_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedQueueAssignmentRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedQueueAssignmentRequest"];
+                "multipart/form-data": components["schemas"]["PatchedQueueAssignmentRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueAssignment"];
+                };
+            };
+        };
+    };
+    fulfillment_queues_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueueListResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_queues_delivery_retrieve: {
+        parameters: {
+            query?: {
+                channel?: string[];
+                delivery_option?: string[];
+                departs_from?: string;
+                departs_to?: string;
+                limit?: number;
+                mode?: ("AUTO" | "HYBRID" | "MANUAL")[];
+                offset?: number;
+                ordering?: "-departs" | "departs";
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryQueueResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_queues_packaging_retrieve: {
+        parameters: {
+            query?: {
+                channel?: string[];
+                due_from?: string;
+                due_to?: string;
+                limit?: number;
+                offset?: number;
+                ordering?: "-created" | "-due" | "created" | "due";
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkQueueResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_queues_preparation_retrieve: {
+        parameters: {
+            query?: {
+                channel?: string[];
+                due_from?: string;
+                due_to?: string;
+                limit?: number;
+                offset?: number;
+                ordering?: "-created" | "-due" | "created" | "due";
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkQueueResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_sales_list: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SaleListResponse"];
+                };
+            };
+        };
+    };
+    fulfillment_sales_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SaleCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["SaleCreateRequest"];
+                "multipart/form-data": components["schemas"]["SaleCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Sale"];
+                };
+            };
+        };
+    };
+    fulfillment_sales_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Sale"];
                 };
             };
         };

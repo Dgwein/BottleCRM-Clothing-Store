@@ -29,6 +29,11 @@ which is exactly why they're written down here with the file and line that makes
   `Product`, `Payment`, and `InvoiceTemplate` in the same app. This app also owns the anonymous
   client-portal views (see [Multi-tenancy and RLS](multi-tenancy-and-rls.md#portal-tokens)).
 - **Order** (`backend/orders/models.py`), `Order`/`OrderLineItem`.
+- **Sale** (`backend/fulfillment/models.py`): the fulfilment side of one order, its channel and
+  committed delivery time, with its `PreparationOrder`s and one `PackagingOrder`. A packed sale
+  rides a `DispatchOrder` (one run of a `DeliveryOption`) through a `DispatchOrderItem`.
+  `QueueAssignment` gives teams their order types.
+  See [Fulfillment](#fulfillment).
 - **Interaction** (`backend/interactions/models.py`): a call, meeting, email, WhatsApp message or
   SMS logged on a record, or an enquiry a lead made. It links to any of a lead, contact, account,
   deal and ticket, and `home` names the one it was logged on, whose visibility alone decides who
@@ -69,6 +74,62 @@ deliberately which of the two it means, rather than assuming they're always in s
 `Opportunity.account` is a nullable FK to `Account`; `Opportunity.contacts` is a many-to-many to
 `Contact`. `Case.account` is a required-in-practice (blank/null allowed, but `on_delete=CASCADE`)
 FK to `Account`, and `Case.contacts` is a many-to-many to `Contact`.
+
+## Fulfillment
+
+`backend/fulfillment/` takes a sale from paid to dispatched for a store that sells through several
+channels. It is built to be merged with two projects running alongside it, so it changes none of
+the models they own: `orders` (the channel sync writes `Order` and `Account`), and the catalogue,
+held in Mercado Libre for now and growing into its own `catalog` app, which owns `Product`. Its
+only links into them are foreign keys from its own tables (`Sale.order`, a one-to-one to `Order`,
+and `PreparationOrder.line_item`); the reverse accessors (`order.sale`,
+`order_line_item.preparation_orders`) change no table.
+
+```
+orders.Order ◄──1:1── Sale ──► SalesChannel (late penalty)
+                       │
+                       ├──── PreparationOrder (0..n) ──► orders.OrderLineItem (optional)
+                       ├──── PackagingOrder (1)
+                       └──── DispatchOrderItem (0..1) ──► DispatchOrder ──► DeliveryOption
+                                                        (one run)          │
+                                                                           └── DeliveryOptionDay (0..n)
+```
+
+- **`SalesChannel`** and **`DeliveryOption`** are configuration, written by admins.
+- **`Sale`** carries what fulfilment needs that `Order` does not: the channel and the committed
+  delivery time.
+- **`PreparationOrder`** and **`PackagingOrder`** are minimal placeholders. Nothing in the codebase
+  had them, and dispatch needs to know when a sale is packed, so this app defines just enough: a
+  status and a completion time, packing refused while a preparation is pending. They are expected
+  to be reconciled with the fuller versions at the merge. The seam is narrow: dispatch reads only
+  "packaging order completed" (`services.ready_sales`), the queues read statuses
+  (`queues.work_queue`), and every change of state goes through `services.complete_preparation`
+  and `services.complete_packaging`, so a replacement has two functions and two queries to honour.
+- **Inspection** (returned products reviewed before they go back into inventory) is an order type
+  without a model here: the returns project owns the orders and their queue. The type exists so a
+  team can be assigned to it, and that project checks access with
+  `fulfillment.access.may(profile, "INSPECTION", level)`.
+- **`QueueAssignment`** gives a `common.Teams` team `VIEW`, `HANDLE` or (delivery only) `CLOSE`
+  on one of the four order types. It reuses the org's existing teams rather than adding a group
+  model, and every rule reading it lives in `fulfillment/access.py`. A queue belongs to its type,
+  not to a team: everyone with access to the type shares it.
+- **Workdays** belong to each `DeliveryOption`: its weekly opening times (`monday_opens` to
+  `sunday_opens`) and its **`DeliveryOptionDay`** rows, dated free days and extra working days. A
+  new option may copy the org's `business_hours.BusinessCalendar` once, at creation
+  (`services.import_business_hours`); planning never reads the business calendar, so the two
+  evolve independently.
+- **`DispatchOrder`** is one run of one option (unique per option and departure time), and
+  **`DispatchOrderItem`** puts one sale on it (a sale is on at most one). Its `mode` says who
+  decided it: `AUTO` orders are written only by `services.create_dispatch_orders`, which
+  recalculates from the current values on demand; `MANUAL` and `HYBRID` orders by
+  `services.create_manual_dispatch_order`, and a recalculation keeps their sales and run.
+  `services.release_dispatch_order` undoes an open one and `services.close_dispatch_order` fixes
+  the actual figures. All take a per-org advisory lock, so no two of them interleave.
+- **The plan** is `fulfillment/planner.py`, pure Python with no ORM, so its rules are tested on
+  their own; the services translate rows in and out of it. The rules are in
+  [Dispatch](../features/dispatch.md).
+
+All nine tables are org-scoped `BaseOrgModel`s under RLS (`fulfillment/0002_enable_rls.py`).
 
 ## Conventions
 

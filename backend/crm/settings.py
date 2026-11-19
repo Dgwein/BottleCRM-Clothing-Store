@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     "tasks",
     "invoices",
     "orders",
+    "fulfillment",
     "business_hours",
     "macros",
     "webforms",

@@ -103,6 +103,18 @@ ORG_SCOPED_TABLES = [
     # Orders
     "orders",
     "order_line_item",
+    # Fulfilment of orders: channels, delivery options and their days, sales
+    # and their preparation, packaging and dispatch orders, and which teams
+    # handle each order type, stamped by fulfillment/0002.
+    "sales_channel",
+    "delivery_option",
+    "delivery_option_day",
+    "sale",
+    "preparation_order",
+    "packaging_order",
+    "dispatch_order",
+    "dispatch_order_item",
+    "queue_assignment",
     #
     # `security_audit_log` is deliberately NOT here. It is a platform-level
     # ledger, not tenant data: its `org` is `null=True` because the events it
