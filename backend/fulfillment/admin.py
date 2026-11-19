@@ -14,7 +14,6 @@ from fulfillment.models import (
     PreparationOrder,
     QueueAssignment,
     Sale,
-    SalesChannel,
 )
 
 
@@ -24,13 +23,6 @@ class _ReadOnlyAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
-
-
-@admin.register(SalesChannel)
-class SalesChannelAdmin(admin.ModelAdmin):
-    list_display = ("name", "late_penalty", "org", "created_at")
-    search_fields = ("name",)
-    raw_id_fields = ("org",)
 
 
 class DeliveryOptionDayInline(admin.TabularInline):

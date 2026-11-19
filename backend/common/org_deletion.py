@@ -46,6 +46,8 @@ _PROTECTING = (
     "invoices.Estimate",
     "invoices.RecurringInvoice",
     "orders.Order",
+    "fulfillment.DispatchOrder",
+    "fulfillment.DeliveryOption",
     "projects.Project",
 )
 

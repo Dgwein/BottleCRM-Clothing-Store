@@ -1,8 +1,8 @@
 """Getting a sale out of the door: preparation, packaging and dispatch.
 
-A `Sale` extends one `orders.Order` with what fulfilment needs (the channel it
-came through and the time promised to the buyer), so `Order` itself stays as
-the channel sync writes it. See docs/features/dispatch.md.
+A `Sale` extends one `orders.Order` with the time promised to the buyer. Its
+channel is the shared `catalog.SalesChannel` also used by orders and invoices.
+See docs/features/dispatch.md.
 """
 
 from datetime import time
@@ -11,6 +11,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
 
+# Keep the old import path usable; Django registers the model only in Catalog.
+from catalog.models import SalesChannel
 from common.base import BaseOrgModel
 
 WEEKDAYS = (
@@ -66,29 +68,6 @@ def _money(verbose_name, **kwargs):
         validators=[MinValueValidator(0)],
         **kwargs,
     )
-
-
-class SalesChannel(BaseOrgModel):
-    """Where a sale was made: the store, Mercado Libre, Amazon and so on."""
-
-    name = models.CharField(max_length=100)
-    late_penalty = _money(
-        "Late penalty",
-        help_text="Charged once per sale that reaches the buyer after the committed time.",
-    )
-
-    class Meta:
-        db_table = "sales_channel"
-        ordering = ("name",)
-        indexes = [models.Index(fields=["org", "-created_at"])]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["org", "name"], name="unique_sales_channel_name_per_org"
-            )
-        ]
-
-    def __str__(self):
-        return self.name
 
 
 WORKDAY_FIELDS = tuple(f"{day}_opens" for day in (
@@ -238,6 +217,13 @@ class Sale(BaseOrgModel):
         _inherit_org(self, self.order, "Sale")
         if self.channel.org_id != self.org_id:
             raise ValueError("Sale.channel must belong to the sale's org")
+        if self.order.sales_channel_id not in (None, self.channel_id):
+            raise ValueError("Sale.channel must match Order.sales_channel")
+        if self.order.sales_channel_id is None:
+            self.order.sales_channel = self.channel
+            self.order.save(
+                update_fields=["sales_channel", "updated_at", "updated_by"]
+            )
         super().save(*args, **kwargs)
 
 

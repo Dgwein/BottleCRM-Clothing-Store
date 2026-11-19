@@ -1,6 +1,6 @@
 # Fulfillment
 
-Sales channels, delivery options, sales with their preparation and packaging orders, dispatch
+Shared catalog sales channels, delivery options, sales with their preparation and packaging orders, dispatch
 orders and the dispatch plan, the queues, and which teams handle which order type. What the rules
 are and how the plan is chosen is in [Dispatch](../features/dispatch.md). Routes are in
 `backend/fulfillment/urls.py`, views in `fulfillment/views.py`, every change of state goes through
@@ -42,6 +42,11 @@ are and how the plan is chosen is in [Dispatch](../features/dispatch.md). Routes
 | `POST /api/fulfillment/queue-assignments/` | Assign a team to an order type (`201`, admins) |
 | `PATCH /api/fulfillment/queue-assignments/{id}/` | Change its level (admins) |
 | `DELETE /api/fulfillment/queue-assignments/{id}/` | Remove it (`204`, admins) |
+
+The fulfillment channel routes remain for existing clients, but they read and write the same
+`catalog.SalesChannel` rows as `/api/catalog/channels/`. New catalog channels should be created
+there with their `kind` and `code`; the fulfillment create route remains compatible with its older
+`name` and `late_penalty` payload and creates an online channel with a generated code.
 
 ## Who may
 

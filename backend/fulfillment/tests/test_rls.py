@@ -21,7 +21,6 @@ from fulfillment.models import (
 )
 
 TABLES = [
-    "sales_channel",
     "delivery_option",
     "delivery_option_day",
     "sale",

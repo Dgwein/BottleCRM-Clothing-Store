@@ -49,9 +49,11 @@ CatalogProduct ──< invoices.Product (variant: size, stock, price)  │   └
 
 ### Sales channels
 
-A **`SalesChannel`** is where the store sells. It is its own entity, not an `Account`: an invoice
-is addressed to the customer who pays it (its account), and records separately the channel the
-sale came through (`Invoice.sales_channel`, and `Order.sales_channel`). Two kinds:
+A **`SalesChannel`** is the shared record for where the store sells. Catalog, orders, invoices and
+fulfillment all point to this same entity. It is not an `Account`: an invoice is addressed to the
+customer who pays it (its account), and records separately the channel the sale came through
+(`Invoice.sales_channel`, `Order.sales_channel` and the fulfillment sale). A channel also holds
+its late-delivery penalty. Two kinds:
 
 - **Online** (`ONLINE`): a marketplace or web shop. It has a market id (`site`, such as `MLM`),
   publishes **`Listing`s** under its own ids, and may name attributes its own way
@@ -69,9 +71,10 @@ holds no price and no stock.
 Stock is one number per variant, the same for every channel, physical stores included.
 
 A channel switched off (`is_active`) is not offered for new sales; an invoice that already records
-it keeps it. A channel with listings, invoices or orders is not deleted (409, naming them): switch
-it off instead; while Invoices is switched off, the 409 names the module instead, as for an
-account. A channel with listings or attribute codes stays online.
+it keeps it. A channel with listings, invoices, orders, fulfillment sales or delivery options is
+not deleted (409, naming them): switch it off instead; while Invoices is switched off, the 409
+names the module instead, as for an account. A channel with listings or attribute codes stays
+online.
 
 ### Prices
 

@@ -124,10 +124,10 @@ ORG_SCOPED_TABLES = [
     "order_work_order",
     "order_import_run",
     "order_import_run_entry",
-    # Fulfilment of orders: channels, delivery options and their days, sales
+    # Fulfilment of orders: delivery options and their days, sales
     # and their preparation, packaging and dispatch orders, and which teams
-    # handle each order type, stamped by fulfillment/0002.
-    "sales_channel",
+    # handle each order type, stamped by fulfillment/0002. Sales channels are
+    # catalog-owned and use `catalog_sales_channel` above.
     "delivery_option",
     "delivery_option_day",
     "sale",

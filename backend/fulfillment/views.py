@@ -18,6 +18,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from catalog.models import SalesChannel
 from common.lookups import get_scoped_or_404
 from common.money import org_currency
 from common.permissions import HasOrgContext, IsOrgAdmin, is_org_admin, may_configure
@@ -35,7 +36,6 @@ from fulfillment.models import (
     PreparationOrder,
     QueueAssignment,
     Sale,
-    SalesChannel,
 )
 from fulfillment.serializers import (
     DeliveryOptionDaySerializer,

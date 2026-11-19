@@ -14,8 +14,10 @@ only for the attributes it actually has. See docs/architecture/catalog.md for th
 """
 
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from common.base import BaseOrgModel
@@ -26,12 +28,11 @@ ORG_INDEX = models.Index(fields=["org", "-created_at"])
 
 
 class SalesChannel(BaseOrgModel):
-    """Where the store sells: an online channel (Mercado Libre, Amazon, its
-    own web shop) or a physical store. It is not an `Account`: an invoice is
-    addressed to the customer who pays it and records the channel the sale
-    came through (`Invoice.sales_channel`). Every channel sells the whole
-    catalog at the variant's one price. Only an online channel publishes
-    listings under its own ids and names attributes its own way."""
+    """One shared identity for catalog listings, orders, invoices and fulfilment.
+
+    It is not an `Account`: an invoice is addressed to the customer who pays
+    it and records the channel the sale came through. Online channels publish
+    listings; every channel may also carry a fulfilment late penalty."""
 
     ONLINE = "ONLINE"
     STORE = "STORE"
@@ -64,6 +65,13 @@ class SalesChannel(BaseOrgModel):
         validators=[flexible_phone_validator],
     )
     is_active = models.BooleanField(_("Is active"), default=True)
+    late_penalty = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text="Charged once per sale that reaches the buyer after the committed time.",
+    )
 
     ADDRESS_FIELDS = ("address_line", "city", "state", "postcode", "country", "phone")
 
@@ -83,6 +91,23 @@ class SalesChannel(BaseOrgModel):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            base = slugify(self.name).replace("mercado-libre", "mercadolibre")[:50]
+            base = base or "channel"
+            code = base
+            suffix = 2
+            while (
+                type(self).objects.filter(org_id=self.org_id, code=code)
+                .exclude(pk=self.pk)
+                .exists()
+            ):
+                tail = f"-{suffix}"
+                code = f"{base[: 50 - len(tail)]}{tail}"
+                suffix += 1
+            self.code = code
+        super().save(*args, **kwargs)
 
 
 class Category(BaseOrgModel):

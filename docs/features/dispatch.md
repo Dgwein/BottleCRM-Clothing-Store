@@ -45,9 +45,10 @@ that own them.
 
 ## Channels and delivery options
 
-A **channel** carries the **late penalty**: what the store pays when a sale from that channel
-reaches the buyer after its committed time. It belongs to the channel, not the sale, and may be
-`0` (a sale at the counter, say).
+A **channel** is the shared `catalog.SalesChannel` used by catalog, orders and invoices. It carries
+the **late penalty**: what the store pays when a sale from that channel reaches the buyer after its
+committed time. It belongs to the channel, not the sale, and may be `0` (a sale at the counter,
+say).
 
 A **delivery option** is one way a package can leave:
 

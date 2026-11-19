@@ -27,7 +27,7 @@ class OrgInlinesAdmin(admin.ModelAdmin):
 
 @admin.register(SalesChannel)
 class SalesChannelAdmin(admin.ModelAdmin):
-    list_display = ("name", "code", "site", "org")
+    list_display = ("name", "code", "kind", "site", "late_penalty", "org")
     list_filter = ("org",)
 
 

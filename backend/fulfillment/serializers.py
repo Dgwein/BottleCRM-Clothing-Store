@@ -3,6 +3,7 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from business_hours.calendar import get_default_calendar
+from catalog.models import SalesChannel
 from common.models import Teams
 from fulfillment import services
 from fulfillment.models import (
@@ -17,7 +18,6 @@ from fulfillment.models import (
     PreparationOrder,
     QueueAssignment,
     Sale,
-    SalesChannel,
 )
 from orders.models import Order
 
@@ -60,6 +60,11 @@ class SalesChannelSerializer(serializers.ModelSerializer):
         if taken.exists():
             raise serializers.ValidationError(NAME_TAKEN)
         return value
+
+    def create(self, validated_data):
+        validated_data["kind"] = SalesChannel.ONLINE
+        validated_data["code"] = ""
+        return SalesChannel.objects.create(org=self.context["org"], **validated_data)
 
 
 NO_BUSINESS_HOURS = "This organization has no business hours to import."
@@ -301,6 +306,11 @@ class SaleCreateSerializer(_OrgScoped, serializers.Serializer):
         """Resolve each line item against the order, which is already the
         caller's org's, so an id from elsewhere is simply not on it."""
         order = attrs["order"]
+        channel = attrs["channel"]
+        if order.sales_channel_id not in (None, channel.pk):
+            raise serializers.ValidationError(
+                {"channel": ["The sale channel must match the order's sales channel."]}
+            )
         preparations = attrs.get("preparations", [])
         wanted = {p["line_item"] for p in preparations if p.get("line_item")}
         on_order = {li.id: li for li in order.line_items.filter(pk__in=wanted)}

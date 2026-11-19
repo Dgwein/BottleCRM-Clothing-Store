@@ -63,6 +63,7 @@ class SalesChannelSerializer(serializers.ModelSerializer):
             "country",
             "phone",
             "is_active",
+            "late_penalty",
             "created_at",
         )
         read_only_fields = ("id", "created_at")

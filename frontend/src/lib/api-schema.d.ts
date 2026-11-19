@@ -14862,8 +14862,10 @@ export interface components {
             position?: number;
         };
         /**
-         * @description An online channel has a market id and no address; a physical store the
-         *     other way round. A channel that publishes listings stays online.
+         * @description One shared identity for catalog listings, orders, invoices and fulfilment.
+         *     It is not an `Account`: an invoice is addressed to the customer who pays
+         *     it and records the channel the sale came through. Online channels publish
+         *     listings; every channel may also carry a fulfilment late penalty.
          */
         PatchedSalesChannelRequest: {
             name?: string;
@@ -14880,6 +14882,8 @@ export interface components {
             country?: components["schemas"]["CountryEnum"] | components["schemas"]["BlankEnum"];
             phone?: string;
             is_active?: boolean;
+            /** @description Charged once per sale that reaches the buyer after the committed time. */
+            late_penalty?: string;
         };
         /**
          * @description Write serializer for SalesGoal (create + partial update).
@@ -16588,6 +16592,8 @@ export interface components {
             country: components["schemas"]["CountryEnum"] | components["schemas"]["BlankEnum"];
             phone: string;
             is_active: boolean;
+            /** @description Charged once per sale that reaches the buyer after the committed time. */
+            late_penalty: string;
             /** Format: date-time */
             readonly created_at: string;
         };
@@ -16608,8 +16614,10 @@ export interface components {
             readonly kind: components["schemas"]["SalesChannelKindEnum"];
         };
         /**
-         * @description An online channel has a market id and no address; a physical store the
-         *     other way round. A channel that publishes listings stays online.
+         * @description One shared identity for catalog listings, orders, invoices and fulfilment.
+         *     It is not an `Account`: an invoice is addressed to the customer who pays
+         *     it and records the channel the sale came through. Online channels publish
+         *     listings; every channel may also carry a fulfilment late penalty.
          */
         SalesChannelRequest: {
             name: string;
@@ -16626,6 +16634,8 @@ export interface components {
             country?: components["schemas"]["CountryEnum"] | components["schemas"]["BlankEnum"];
             phone?: string;
             is_active?: boolean;
+            /** @description Charged once per sale that reaches the buyer after the committed time. */
+            late_penalty?: string;
         };
         SalesGoal: {
             /** Format: uuid */

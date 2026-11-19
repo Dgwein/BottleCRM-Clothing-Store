@@ -38,8 +38,8 @@ which is exactly why they're written down here with the file and line that makes
   `WorkOrder` (preparation, packaging and return inspection), `ChannelPreference`, `ImportRun` and
   `ImportRunEntry` for sales imported from online channels (see
   [Online channel orders](../features/channel-orders.md)).
-- **Sale** (`backend/fulfillment/models.py`): the fulfilment side of one order, its channel and
-  committed delivery time, with its `PreparationOrder`s and one `PackagingOrder`. A packed sale
+- **Sale** (`backend/fulfillment/models.py`): the fulfilment side of one order, its shared catalog
+  channel and committed delivery time, with its `PreparationOrder`s and one `PackagingOrder`. A packed sale
   rides a `DispatchOrder` (one run of a `DeliveryOption`) through a `DispatchOrderItem`.
   `QueueAssignment` gives teams their order types.
   See [Fulfillment](#fulfillment).
@@ -87,15 +87,13 @@ FK to `Account`, and `Case.contacts` is a many-to-many to `Contact`.
 ## Fulfillment
 
 `backend/fulfillment/` takes a sale from paid to dispatched for a store that sells through several
-channels. It is built to be merged with two projects running alongside it, so it changes none of
-the models they own: `orders` (the channel sync writes `Order` and `Account`), and the catalogue,
-held in Mercado Libre for now and growing into its own `catalog` app, which owns `Product`. Its
-only links into them are foreign keys from its own tables (`Sale.order`, a one-to-one to `Order`,
-and `PreparationOrder.line_item`); the reverse accessors (`order.sale`,
+channels. Orders and fulfillment share `catalog.SalesChannel`, so the imported order, invoice and
+fulfillment sale refer to the same channel identity. Fulfillment links to `orders.Order` through
+`Sale.order` and to `OrderLineItem` through `PreparationOrder.line_item`; the reverse accessors (`order.sale`,
 `order_line_item.preparation_orders`) change no table.
 
 ```
-orders.Order ◄──1:1── Sale ──► SalesChannel (late penalty)
+  orders.Order ◄──1:1── Sale ──► catalog.SalesChannel (late penalty)
                        │
                        ├──── PreparationOrder (0..n) ──► orders.OrderLineItem (optional)
                        ├──── PackagingOrder (1)
@@ -104,9 +102,10 @@ orders.Order ◄──1:1── Sale ──► SalesChannel (late penalty)
                                                                            └── DeliveryOptionDay (0..n)
 ```
 
-- **`SalesChannel`** and **`DeliveryOption`** are configuration, written by admins.
-- **`Sale`** carries what fulfilment needs that `Order` does not: the channel and the committed
-  delivery time.
+- **`DeliveryOption`** is configuration, written by admins. Its channel points to the shared
+  `catalog.SalesChannel`.
+- **`Sale`** carries the committed delivery time. Its channel also points to the same
+  `catalog.SalesChannel` recorded on an order.
 - **`PreparationOrder`** and **`PackagingOrder`** are minimal placeholders. Nothing in the codebase
   had them, and dispatch needs to know when a sale is packed, so this app defines just enough: a
   status and a completion time, packing refused while a preparation is pending. They are expected
@@ -138,7 +137,8 @@ orders.Order ◄──1:1── Sale ──► SalesChannel (late penalty)
   their own; the services translate rows in and out of it. The rules are in
   [Dispatch](../features/dispatch.md).
 
-All nine tables are org-scoped `BaseOrgModel`s under RLS (`fulfillment/0002_enable_rls.py`).
+All fulfillment tables are org-scoped `BaseOrgModel`s under RLS (`fulfillment/0002_enable_rls.py`).
+The shared sales channel is `catalog_sales_channel`, under Catalog's RLS policy.
 
 ## Conventions
 

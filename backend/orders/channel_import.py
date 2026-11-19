@@ -324,17 +324,23 @@ class _Sync:
     def sales_channel(self):
         """Link to the matching catalog.SalesChannel if configured in the org."""
         if self._sales_channel is False:
-            kind_map = {
-                "MERCADOLIBRE": "MERCADO_LIBRE",
-                "AMAZON": "AMAZON",
-                "STORE": "PHYSICAL_STORE",
-            }
-            kind = kind_map.get(self.channel, self.channel)
-            self._sales_channel = (
-                SalesChannel.objects.filter(org=self.org, kind=kind, is_active=True)
-                .order_by("created_at")
-                .first()
-            )
+            channels = SalesChannel.objects.filter(org=self.org, is_active=True)
+            if self.channel == "STORE":
+                channels = channels.filter(kind=SalesChannel.STORE)
+                self._sales_channel = channels.order_by("created_at", "id").first()
+            else:
+                code = {
+                    "MERCADOLIBRE": "mercadolibre",
+                    "AMAZON": "amazon",
+                }.get(self.channel)
+                if code is None:
+                    self._sales_channel = None
+                    return self._sales_channel
+                self._sales_channel = channels.filter(code=code).first()
+                if self._sales_channel is None:
+                    self._sales_channel = channels.filter(
+                        name__iexact=self.label
+                    ).order_by("created_at", "id").first()
         return self._sales_channel
 
     def sync_order(self, data: ChannelOrder) -> Order:

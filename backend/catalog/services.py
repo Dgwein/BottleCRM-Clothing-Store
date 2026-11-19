@@ -436,8 +436,9 @@ def product_deletion_refusal(product):
 
 def channel_deletion_refusal(channel):
     """Why a sales channel cannot be deleted, or None: not while it publishes
-    listings or an invoice or order records a sale through it. Switching it
-    off keeps it on those records and out of the pickers."""
+    listings, invoices, orders, fulfillment sales or delivery options refer to
+    it. Switching it off keeps it on those records and out of the pickers."""
+    from fulfillment.models import DeliveryOption, Sale
     from invoices.models import Invoice
     from orders.models import Order
 
@@ -446,6 +447,12 @@ def channel_deletion_refusal(channel):
         ("listing", "listings", channel.listings.count()),
         ("invoice", "invoices", Invoice.objects.filter(sales_channel=channel).count()),
         ("order", "orders", Order.objects.filter(sales_channel=channel).count()),
+        ("sale", "sales", Sale.objects.filter(channel=channel).count()),
+        (
+            "delivery option",
+            "delivery options",
+            DeliveryOption.objects.filter(channel=channel).count(),
+        ),
     ):
         if count:
             found.append(f"{count} {single if count == 1 else plural}")

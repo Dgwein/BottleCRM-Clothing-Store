@@ -69,11 +69,14 @@ def test_a_channel_kind_option_without_a_channel_is_refused_by_the_database(org_
         DeliveryOption.objects.create(org=org_a, name="Pickup", kind="CHANNEL_PICKUP")
 
 
-def test_channel_names_are_unique_per_org(org_a, org_b):
-    SalesChannel.objects.create(org=org_a, name="Amazon")
-    SalesChannel.objects.create(org=org_b, name="Amazon")
-    with pytest.raises(IntegrityError), transaction.atomic():
-        SalesChannel.objects.create(org=org_a, name="Amazon")
+def test_channels_without_codes_get_org_unique_codes(org_a, org_b):
+    amazon = SalesChannel.objects.create(org=org_a, name="Amazon")
+    same_name = SalesChannel.objects.create(org=org_a, name="Amazon")
+    other_org = SalesChannel.objects.create(org=org_b, name="Amazon")
+
+    assert amazon.code == "amazon"
+    assert same_name.code == "amazon-2"
+    assert other_org.code == "amazon"
 
 
 def test_a_sale_added_in_the_admin_gets_its_packaging_order(make_order, ml, admin_user):
