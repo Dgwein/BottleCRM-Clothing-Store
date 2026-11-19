@@ -142,7 +142,7 @@ class BaseOrgModel(BaseModel):
     org = models.ForeignKey(
         "common.Org",
         on_delete=models.CASCADE,
-        related_name="%(class)s_set",
+        related_name="%(app_label)s_%(class)s_set",
         help_text="Organization this record belongs to",
     )
 

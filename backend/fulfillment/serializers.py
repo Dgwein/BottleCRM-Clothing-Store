@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_serializer
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
@@ -43,6 +44,7 @@ class _OrgScoped:
             target.queryset = model.objects.filter(org=org)
 
 
+@extend_schema_serializer(component_name="FulfillmentSalesChannel")
 class SalesChannelSerializer(serializers.ModelSerializer):
     class Meta:
         model = SalesChannel

@@ -414,13 +414,13 @@ class TestReimport:
         assert result.preparation_orders == result.packaging_orders == 0
 
     def test_same_report_twice_takes_stock_once(self, org_a):
-        product = listing_product(org_a, stock_quantity=5)
+        product = listing_product(org_a, stock=5)
 
         run(org_a, sale("S1", units=2))
         run(org_a, sale("S1", units=2))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("3.00")
+        assert product.stock == Decimal("3.00")
 
     def test_status_change_updates_the_order(self, org_a):
         run(org_a, sale("S1"))
@@ -437,7 +437,7 @@ class TestReimport:
         assert Order.objects.filter(org=org_a).count() == 1
 
     def test_shipping_closes_open_work_orders(self, org_a):
-        listing_product(org_a, stock_quantity=1)
+        listing_product(org_a, stock=1)
         run(org_a, sale("S1", units=3))
         assert work(org_a) == {
             "PREPARATION": (2, "PENDING"),
@@ -451,15 +451,15 @@ class TestReimport:
         assert item(org_a, "S1").stock_allocated == Decimal("3.00")
 
     def test_cancellation_returns_stock_and_cancels_work(self, org_a):
-        product = listing_product(org_a, stock_quantity=1)
+        product = listing_product(org_a, stock=1)
         run(org_a, sale("S1", units=3))
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
 
         result = run(org_a, sale("S1", units=3, status="Cancelada por el comprador"))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("1.00")
+        assert product.stock == Decimal("1.00")
         assert result.stock_released == Decimal("1.00")
         assert work(org_a) == {
             "PREPARATION": (2, "CANCELLED"),
@@ -470,19 +470,19 @@ class TestReimport:
         assert Order.objects.get(org=org_a).status == "CANCELLED"
 
     def test_prepared_then_cancelled_before_packaging_restocks_and_cancels(self, org_a):
-        product = listing_product(org_a, stock_quantity=0)
+        product = listing_product(org_a, stock=0)
         run(org_a, sale("S1", units=2))
         preparation = WorkOrder.objects.get(org=org_a, kind="PREPARATION")
         assert inventory.complete_work_order(preparation)
         # The two units made are set aside for the sale, not left on the shelf.
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
         assert item(org_a, "S1").stock_allocated == Decimal("2.00")
 
         result = run(org_a, sale("S1", units=2, status="Cancelaste la venta"))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("2.00")
+        assert product.stock == Decimal("2.00")
         assert result.stock_released == Decimal("2.00")
         assert work(org_a) == {
             "PREPARATION": (2, "DONE"),
@@ -490,10 +490,10 @@ class TestReimport:
         }
 
     def test_partly_stocked_prepared_then_cancelled_restocks_everything(self, org_a):
-        product = listing_product(org_a, stock_quantity=2)
+        product = listing_product(org_a, stock=2)
         run(org_a, sale("S1", units=5))
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
         inventory.complete_work_order(
             WorkOrder.objects.get(org=org_a, kind="PREPARATION")
         )
@@ -502,27 +502,27 @@ class TestReimport:
 
         # Two taken from stock and three prepared all go back on the shelf.
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("5.00")
+        assert product.stock == Decimal("5.00")
         assert work(org_a) == {
             "PREPARATION": (3, "DONE"),
             "PACKAGING": (5, "CANCELLED"),
         }
 
     def test_cancelled_before_anything_was_done_cancels_all_work(self, org_a):
-        product = listing_product(org_a, stock_quantity=1)
+        product = listing_product(org_a, stock=1)
         run(org_a, sale("S1", units=3))
 
         run(org_a, sale("S1", units=3, status="Cancelada por el comprador"))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("1.00")
+        assert product.stock == Decimal("1.00")
         assert work(org_a) == {
             "PREPARATION": (2, "CANCELLED"),
             "PACKAGING": (3, "CANCELLED"),
         }
 
     def test_cancelling_one_item_of_a_pack_keeps_the_order_open(self, org_a):
-        product = listing_product(org_a, listing="MLM2", variant="", stock_quantity=4)
+        product = listing_product(org_a, listing="MLM2", variant="", stock=4)
         rows = lambda a_status: pack(  # noqa: E731
             "P1",
             sale("P1-A", listing="MLM2", variant="", status=a_status),
@@ -533,7 +533,7 @@ class TestReimport:
         run(org_a, rows("Cancelada por el comprador"))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("4.00")
+        assert product.stock == Decimal("4.00")
         order = Order.objects.get(org=org_a)
         assert order.fulfillment_status == "PENDING"
         assert item(org_a, "P1-A").fulfillment_status == "CANCELLED"
@@ -541,19 +541,19 @@ class TestReimport:
         assert packaging(org_a, "P1") == [(1, "PENDING")]
 
     def test_quantity_change_before_shipping_plans_again(self, org_a):
-        product = listing_product(org_a, stock_quantity=5)
+        product = listing_product(org_a, stock=5)
         run(org_a, sale("S1", units=1))
 
         run(org_a, sale("S1", units=4))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("1.00")
+        assert product.stock == Decimal("1.00")
         assert item(org_a, "S1").stock_allocated == Decimal("4.00")
 
         run(org_a, sale("S1", units=7))
 
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
         # Only the last plan's work is open; 5 on hand, 2 to prepare.
         open_work = WorkOrder.objects.filter(org=org_a, status="PENDING")
         assert {(wo.kind, wo.quantity) for wo in open_work} == {
@@ -562,10 +562,10 @@ class TestReimport:
         }
 
     def test_remapped_listing_moves_open_items_stock(self, org_a):
-        first = listing_product(org_a, stock_quantity=2)
+        first = listing_product(org_a, stock=2)
         run(org_a, sale("S1", units=2))
         second = Product.objects.create(
-            org=org_a, name="Real", price=1, stock_quantity=5
+            org=org_a, name="Real", price=1, stock=5
         )
         ChannelListing.objects.filter(org=org_a).update(product=second)
 
@@ -573,11 +573,11 @@ class TestReimport:
 
         first.refresh_from_db()
         second.refresh_from_db()
-        assert (first.stock_quantity, second.stock_quantity) == (2, 3)
+        assert (first.stock, second.stock) == (2, 3)
         assert item(org_a, "S1").product == second
 
     def test_remapping_after_shipping_keeps_the_items_product(self, org_a):
-        first = listing_product(org_a, stock_quantity=2)
+        first = listing_product(org_a, stock=2)
         run(org_a, sale("S1"))
         run(org_a, sale("S1", status="En camino"))
         second = Product.objects.create(org=org_a, name="Real", price=1)
@@ -592,27 +592,27 @@ class TestReimport:
 
         first.refresh_from_db()
         second.refresh_from_db()
-        assert (first.stock_quantity, second.stock_quantity) == (2, None)
+        assert (first.stock, second.stock) == (2, 0)
 
     def test_refund_before_shipping_releases(self, org_a):
-        product = listing_product(org_a, stock_quantity=2)
+        product = listing_product(org_a, stock=2)
         run(org_a, sale("S1"))
 
         run(org_a, sale("S1", status="Le reembolsamos el dinero al comprador"))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("2.00")
+        assert product.stock == Decimal("2.00")
         assert not ReturnInspection.objects.exists()
 
     def test_return_after_delivery_does_not_restock(self, org_a):
-        product = listing_product(org_a, stock_quantity=2)
+        product = listing_product(org_a, stock=2)
         run(org_a, sale("S1"))
         run(org_a, sale("S1", status="Entregado"))
 
         result = run(org_a, sale("S1", status="Devolución finalizada"))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("1.00")
+        assert product.stock == Decimal("1.00")
         assert Order.objects.get(org=org_a).fulfillment_status == "RETURNED"
         assert result.returns_to_inspect == 1
         assert ReturnInspection.objects.get(org=org_a).status == "PENDING"
@@ -657,10 +657,10 @@ class TestStockAndWorkOrders:
         assert preparation.due_date == datetime.date(2026, 11, 18)
         assert (result.preparation_orders, result.packaging_orders) == (1, 1)
         product.refresh_from_db()
-        assert product.stock_quantity is None
+        assert product.stock == 0
 
     def test_zero_stock_prepares_and_packages(self, org_a):
-        product = listing_product(org_a, stock_quantity=0)
+        product = listing_product(org_a, stock=0)
 
         run(org_a, sale("S1"))
 
@@ -669,10 +669,10 @@ class TestStockAndWorkOrders:
             "PACKAGING": (1, "PENDING"),
         }
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
 
     def test_stock_short_of_the_quantity_packages_and_prepares_the_rest(self, org_a):
-        product = listing_product(org_a, stock_quantity=2)
+        product = listing_product(org_a, stock=2)
 
         result = run(org_a, sale("S1", units=5))
 
@@ -682,41 +682,41 @@ class TestStockAndWorkOrders:
         }
         assert item(org_a, "S1").stock_allocated == Decimal("2.00")
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
         assert (result.packaging_orders, result.preparation_orders) == (1, 1)
         assert result.stock_allocated == 2
 
     def test_enough_stock_is_taken_and_packaged(self, org_a):
-        product = listing_product(org_a, stock_quantity=10)
+        product = listing_product(org_a, stock=10)
 
         run(org_a, sale("S1", units=4))
 
         assert work(org_a) == {"PACKAGING": (4, "PENDING")}
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("6.00")
+        assert product.stock == Decimal("6.00")
         assert item(org_a, "S1").stock_allocated == Decimal("4.00")
 
     def test_stock_equal_to_the_quantity_is_enough(self, org_a):
-        product = listing_product(org_a, stock_quantity=3)
+        product = listing_product(org_a, stock=3)
 
         run(org_a, sale("S1", units=3))
 
         assert work(org_a) == {"PACKAGING": (3, "PENDING")}
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
 
     def test_a_single_unit_takes_one_from_stock(self, org_a):
-        product = listing_product(org_a, stock_quantity=4)
+        product = listing_product(org_a, stock=4)
 
         run(org_a, sale("S1", units=1))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("3.00")
+        assert product.stock == Decimal("3.00")
         assert work(org_a) == {"PACKAGING": (1, "PENDING")}
 
     def test_one_packaging_per_sale_and_one_preparation_per_product(self, org_a):
         # Four items of three products: two listings sell product A.
-        listing_product(org_a, listing="MLM-A1", variant="", stock_quantity=1)
+        listing_product(org_a, listing="MLM-A1", variant="", stock=1)
         product_a = Product.objects.get(org=org_a)
         product_a.name = "A"
         product_a.save()
@@ -726,8 +726,8 @@ class TestStockAndWorkOrders:
             listing_id="MLM-A2",
             product=product_a,
         )
-        b = listing_product(org_a, listing="MLM-B", variant="", stock_quantity=0)
-        c = listing_product(org_a, listing="MLM-C", variant="", stock_quantity=9)
+        b = listing_product(org_a, listing="MLM-B", variant="", stock=0)
+        c = listing_product(org_a, listing="MLM-C", variant="", stock=9)
         Product.objects.filter(pk=b.pk).update(name="B")
         Product.objects.filter(pk=c.pk).update(name="C")
 
@@ -748,7 +748,7 @@ class TestStockAndWorkOrders:
         assert (result.preparation_orders, result.packaging_orders) == (2, 1)
 
     def test_each_sale_gets_its_own_work_orders(self, org_a):
-        listing_product(org_a, stock_quantity=3)
+        listing_product(org_a, stock=3)
 
         run(org_a, sale("S1", units=2), sale("S2", units=2), sale("S3", units=1))
 
@@ -764,7 +764,7 @@ class TestStockAndWorkOrders:
         assert WorkOrder.objects.filter(org=org_a, kind="PACKAGING").count() == 3
 
     def test_reimport_keeps_one_of_each(self, org_a):
-        listing_product(org_a, stock_quantity=0)
+        listing_product(org_a, stock=0)
         run(org_a, sale("S1", units=2))
 
         run(org_a, sale("S1", units=2))
@@ -773,7 +773,7 @@ class TestStockAndWorkOrders:
         assert WorkOrder.objects.filter(org=org_a).count() == 2
 
     def test_a_quantity_change_resizes_the_open_work(self, org_a):
-        listing_product(org_a, stock_quantity=1)
+        listing_product(org_a, stock=1)
         run(org_a, sale("S1", units=2))
 
         run(org_a, sale("S1", units=5))
@@ -784,7 +784,7 @@ class TestStockAndWorkOrders:
         }
 
     def test_shipping_finishes_all_the_sales_work(self, org_a):
-        listing_product(org_a, stock_quantity=1)
+        listing_product(org_a, stock=1)
         run(org_a, sale("S1", units=3))
 
         run(org_a, sale("S1", units=3, status="En camino"))
@@ -795,7 +795,7 @@ class TestStockAndWorkOrders:
         }
 
     def test_sales_first_seen_finished_touch_no_stock(self, org_a):
-        product = listing_product(org_a, stock_quantity=5)
+        product = listing_product(org_a, stock=5)
 
         run(
             org_a,
@@ -805,11 +805,11 @@ class TestStockAndWorkOrders:
         )
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("5.00")
+        assert product.stock == Decimal("5.00")
         assert not WorkOrder.objects.filter(org=org_a).exists()
 
     def test_channels_share_the_products_stock(self, org_a):
-        product = listing_product(org_a, stock_quantity=3)
+        product = listing_product(org_a, stock=3)
         ChannelListing.objects.create(
             org=org_a, channel="AMAZON", listing_id="B00X", product=product
         )
@@ -836,7 +836,7 @@ class TestStockAndWorkOrders:
         )
 
         product.refresh_from_db()
-        assert product.stock_quantity == 0
+        assert product.stock == 0
         amazon = Order.objects.get(org=org_a, channel="AMAZON")
         assert {(wo.kind, wo.quantity) for wo in amazon.work_orders.all()} == {
             ("PACKAGING", 2),
@@ -892,8 +892,8 @@ class TestStockAndWorkOrders:
         assert allocated == {"P1-1": 0, "P1-2": 2, "P1-3": 0}
 
     def test_packaging_waits_for_the_sales_open_preparations(self, org_a):
-        listing_product(org_a, listing="MLM-A", variant="", stock_quantity=0)
-        listing_product(org_a, listing="MLM-B", variant="", stock_quantity=0)
+        listing_product(org_a, listing="MLM-A", variant="", stock=0)
+        listing_product(org_a, listing="MLM-B", variant="", stock=0)
         run(
             org_a,
             pack(
@@ -919,7 +919,7 @@ class TestStockAndWorkOrders:
         assert packing.status == "DONE"
 
     def test_another_sales_preparation_does_not_hold_packaging(self, org_a):
-        listing_product(org_a, stock_quantity=1)
+        listing_product(org_a, stock=1)
         run(org_a, sale("S1", units=1), sale("S2", units=1))
         s1_packing = WorkOrder.objects.get(
             org=org_a, kind="PACKAGING", order__external_id="S1"
@@ -931,7 +931,7 @@ class TestStockAndWorkOrders:
         assert inventory.complete_work_order(s1_packing)
 
     def test_a_cancelled_preparation_does_not_hold_packaging(self, org_a):
-        listing_product(org_a, stock_quantity=0)
+        listing_product(org_a, stock=0)
         run(org_a, sale("S1", units=2))
         preparation = WorkOrder.objects.get(org=org_a, kind="PREPARATION")
         WorkOrder.objects.filter(pk=preparation.pk).update(status="CANCELLED")
@@ -940,7 +940,7 @@ class TestStockAndWorkOrders:
         assert inventory.complete_work_order(packing)
 
     def test_finished_packaging_sets_nothing_aside(self, org_a):
-        listing_product(org_a, stock_quantity=1)
+        listing_product(org_a, stock=1)
         run(org_a, sale("S1", units=3))
         inventory.complete_work_order(
             WorkOrder.objects.get(org=org_a, kind="PREPARATION")
@@ -955,7 +955,7 @@ class TestStockAndWorkOrders:
         assert item(org_a, "S1").stock_allocated == allocated == Decimal("3.00")
 
     def test_shipping_finishes_preparations_before_packaging(self, org_a):
-        listing_product(org_a, stock_quantity=0)
+        listing_product(org_a, stock=0)
         run(org_a, pack("P1", sale("P1-A", units=2), sale("P1-B", listing="MLM9")))
 
         run(
@@ -976,7 +976,7 @@ class TestStockAndWorkOrders:
         orders (A 1, B 1, C 2) and one packaging order for the 4 units."""
         for name in ("A", "B", "C"):
             listing_product(
-                org_a, listing=f"MLM-{name}", variant="", name=name, stock_quantity=0
+                org_a, listing=f"MLM-{name}", variant="", name=name, stock=0
             )
 
         result = run(
@@ -1216,7 +1216,7 @@ class TestChannelPreferences:
     def test_the_migration_seeds_one_preference_per_channel(self):
         from django.apps import apps as django_apps
 
-        migration = importlib.import_module("orders.migrations.0005_sales_channels")
+        migration = importlib.import_module("orders.migrations.0006_sales_channels")
         ChannelPreference.objects.all().delete()
 
         migration.seed_channel_preferences(django_apps, None)
@@ -1252,7 +1252,7 @@ class TestImportLog:
         assert product.currency == "MXN"
         assert product.category is None
         assert product.is_active is True
-        assert product.stock_quantity is None
+        assert product.stock == 0
         assert product.availability_days is None
         assert product.org == org_a
         listing = ChannelListing.objects.get(org=org_a)
@@ -1303,13 +1303,13 @@ class TestImportLog:
         )
 
     def test_an_empty_price_refuses_the_sale_of_a_known_product_too(self, org_a):
-        product = listing_product(org_a, stock_quantity=5)
+        product = listing_product(org_a, stock=5)
 
         result = run(org_a, sale("S1", price=""))
 
         assert not Order.objects.exists()
         product.refresh_from_db()
-        assert product.stock_quantity == 5
+        assert product.stock == 5
         assert result.orders_not_imported == 1
 
     def test_an_empty_price_on_a_known_sale_leaves_it_as_it_was(self, org_a):
@@ -1344,7 +1344,7 @@ class TestImportLog:
         assert not result.of_level(ACTION_REQUIRED)
 
     def test_changes_are_logged(self, org_a):
-        listing_product(org_a, stock_quantity=1, name="Vestido")
+        listing_product(org_a, stock=1, name="Vestido")
         first = run(org_a, sale("S1", units=3))
         cancelled = run(org_a, sale("S1", units=3, status="Cancelaste la venta"))
 
@@ -1484,7 +1484,7 @@ class TestImportLog:
 @pytest.mark.django_db
 class TestReturnInspections:
     def _returned(self, org, stock=2, units=1, status="Devolución finalizada"):
-        product = listing_product(org, stock_quantity=stock)
+        product = listing_product(org, stock=stock)
         run(org, sale("S1", units=units))
         run(org, sale("S1", units=units, status="Entregado"))
         run(org, sale("S1", units=units, status=status))
@@ -1494,7 +1494,7 @@ class TestReturnInspections:
     def test_a_return_after_delivery_opens_an_inspection(self, org_a):
         product, inspection = self._returned(org_a, units=2)
 
-        assert product.stock_quantity == 0
+        assert product.stock == 0
         assert (inspection.quantity, inspection.restock_quantity) == (2, 2)
         assert inspection.product == product
         assert inspection.order == Order.objects.get(org=org_a)
@@ -1506,25 +1506,25 @@ class TestReturnInspections:
         result = run(org_a, sale("S1", status="Devolución finalizada"))
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("1.00")
+        assert product.stock == Decimal("1.00")
         assert result.returns_to_inspect == 0
         assert ReturnInspection.objects.filter(org=org_a).count() == 1
 
     def test_a_cancellation_after_shipping_is_inspected_too(self, org_a):
         product, inspection = self._returned(org_a, status="Cancelada por el comprador")
 
-        assert product.stock_quantity == Decimal("1.00")
+        assert product.stock == Decimal("1.00")
         assert inspection.status == "PENDING"
 
     def test_a_sale_first_seen_returned_is_history(self, org_a):
-        listing_product(org_a, stock_quantity=2)
+        listing_product(org_a, stock=2)
 
         run(org_a, sale("S1", status="Devolución finalizada"))
 
         assert not ReturnInspection.objects.exists()
 
     def test_a_history_sale_returned_later_is_inspected(self, org_a):
-        listing_product(org_a, stock_quantity=2)
+        listing_product(org_a, stock=2)
         run(org_a, sale("S1", status="Entregado"))
 
         run(org_a, sale("S1", status="Devolución en camino"))
@@ -1540,7 +1540,7 @@ class TestReturnInspections:
 
         product.refresh_from_db()
         inspection.refresh_from_db()
-        assert product.stock_quantity == Decimal("2.00")
+        assert product.stock == Decimal("2.00")
         assert (inspection.status, inspection.outcome) == ("DONE", "ACCEPTED")
         assert inspection.kind == "INSPECTION"
         assert inspection.completed_by == user
@@ -1553,7 +1553,7 @@ class TestReturnInspections:
 
         product.refresh_from_db()
         inspection.refresh_from_db()
-        assert product.stock_quantity == Decimal("1.00")
+        assert product.stock == Decimal("1.00")
         assert inspection.outcome == "REJECTED"
 
     def test_a_return_is_decided_once(self, org_a):
@@ -1566,7 +1566,7 @@ class TestReturnInspections:
         assert not inventory.reject_return(stale, None)
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("2.00")
+        assert product.stock == Decimal("2.00")
 
     def test_restock_quantity_is_bounded_by_what_came_back(self, org_a):
         product, inspection = self._returned(org_a)
@@ -1575,7 +1575,7 @@ class TestReturnInspections:
         inventory.accept_return(inspection, None)
 
         product.refresh_from_db()
-        assert product.stock_quantity == Decimal("2.00")
+        assert product.stock == Decimal("2.00")
         inspection.refresh_from_db()
         assert inspection.restock_quantity == Decimal("1.00")
 
@@ -1996,7 +1996,7 @@ class TestOrderAdmin:
 
     @pytest.fixture
     def orders(self, org_a):
-        listing_product(org_a, listing="MLM1", variant="", stock_quantity=0)
+        listing_product(org_a, listing="MLM1", variant="", stock=0)
         run(
             org_a,
             sale("S1", listing="MLM1", variant=""),
@@ -2098,14 +2098,14 @@ class TestReturnInspectionAdmin:
 
     @pytest.fixture
     def inspection(self, org_a):
-        listing_product(org_a, stock_quantity=3)
+        listing_product(org_a, stock=3)
         for status in ("Etiqueta impresa", "Entregado", "Devolución finalizada"):
             run(org_a, sale("S1", units=3, status=status))
         return ReturnInspection.objects.get(org=org_a)
 
     def _stock(self, inspection):
         inspection.product.refresh_from_db()
-        return inspection.product.stock_quantity
+        return inspection.product.stock
 
     def test_pending_returns_are_listed(self, staff_client, inspection):
         assert found(staff_client.get(f"{self.URL}?status__exact=PENDING")) == 1
@@ -2490,7 +2490,7 @@ class TestImportRuns:
 
 def _friday_orders(org):
     """Three Mercado Libre sales and one Amazon sale, imported Friday rules."""
-    product = listing_product(org, availability_days=3, stock_quantity=0)
+    product = listing_product(org, availability_days=3, stock=0)
     run(
         org,
         sale("OLD", date="10 de noviembre de 2026 10:00 hs."),

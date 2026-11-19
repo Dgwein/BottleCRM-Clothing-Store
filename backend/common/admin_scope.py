@@ -81,6 +81,8 @@ def current(request) -> Scope | None:
         org = allowed_orgs(request.user).filter(pk=stored).first()
         if org is not None:
             return Scope(org)
+    if request.path.startswith("/admin/common/org/"):
+        return Scope(None)
     return None
 
 

@@ -21,7 +21,7 @@ class UserAuditModel(models.Model):
     created_by = models.ForeignKey(
         "common.User",
         on_delete=models.SET_NULL,
-        related_name="%(class)s_created_by",
+        related_name="%(app_label)s_%(class)s_created_by",
         verbose_name="Created By",
         null=True,
         blank=True,
@@ -29,7 +29,7 @@ class UserAuditModel(models.Model):
     updated_by = models.ForeignKey(
         "common.User",
         on_delete=models.SET_NULL,
-        related_name="%(class)s_updated_by",
+        related_name="%(app_label)s_%(class)s_updated_by",
         verbose_name="Last Modified By",
         null=True,
         blank=True,
