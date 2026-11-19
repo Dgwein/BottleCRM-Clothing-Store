@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     "opportunity",
     "tasks",
     "invoices",
+    "catalog",
     "orders",
     "business_hours",
     "macros",
@@ -582,6 +583,9 @@ SPECTACULAR_SETTINGS = {
         "InvoiceStatusEnum": "invoices.models.INVOICE_STATUS",
         "ContactFormStatusEnum": "common.models.ContactFormSubmission.STATUS_CHOICES",
         "LeadStatusEnum": "common.utils.LEAD_STATUS",
+        "ListingStatusEnum": "catalog.models.Listing.STATUSES",
+        "SalesChannelKindEnum": "catalog.models.SalesChannel.KINDS",
+        "ImportRunStatusEnum": "catalog.models.ImportRun.STATUSES",
     },
 }
 

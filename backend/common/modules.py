@@ -312,6 +312,9 @@ NAMESPACE_MODULES: dict[str, Requires] = {
     "api_time_entries": Requires(("timesheet",), any_of=("tickets", "projects")),
     "api_projects": Requires(("projects",)),
     "api_invoices": Requires(("invoices",)),
+    # Catalog variants are the products invoices and deals price, so the
+    # catalog is there whenever the products are (api/invoices/products/).
+    "api_catalog": Requires(any_of=("invoices", "deals")),
     "public_help": Requires(("knowledge_base",)),
     "public_invoices": Requires(("invoices",)),
     "public_leads": Requires(("leads",)),

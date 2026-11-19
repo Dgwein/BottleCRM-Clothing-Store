@@ -133,6 +133,7 @@
           {/if}
           <span class="v2-sub" style="margin-left:10px">
             Issued {longDate(invoice.issued_date)} · due {longDate(invoice.due_date)}
+            {#if invoice.sales_channel}· sold through {invoice.sales_channel.name}{/if}
           </span>
         </div>
 
@@ -284,6 +285,10 @@
       <dd>{invoiceStatusLabel(invoice.payment_terms)}</dd>
       <dt>Currency</dt>
       <dd>{invoice.currency}</dd>
+      {#if invoice.sales_channel}
+        <dt>Sold through</dt>
+        <dd>{invoice.sales_channel.name}</dd>
+      {/if}
     </dl>
 
     <div class="v2-label v2-rail-head">Bill to</div>

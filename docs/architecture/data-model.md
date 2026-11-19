@@ -28,6 +28,11 @@ which is exactly why they're written down here with the file and line that makes
 - **Invoice** (`backend/invoices/models.py`): billing, alongside `Estimate`, `RecurringInvoice`,
   `Product`, `Payment`, and `InvoiceTemplate` in the same app. This app also owns the anonymous
   client-portal views (see [Multi-tenancy and RLS](multi-tenancy-and-rls.md#portal-tokens)).
+- **Catalog** (`backend/catalog/models.py`): products with variants, shared attributes, sales
+  channels (online channels and physical stores) and the listings online channels publish. A
+  variant is an `invoices.Product` linked to a `CatalogProduct`, so line items price variants with
+  no change. `Invoice.sales_channel` and `Order.sales_channel` record the channel a sale came
+  through; the account stays the customer. See [Product catalog](catalog.md).
 - **Order** (`backend/orders/models.py`), `Order`/`OrderLineItem`.
 - **Interaction** (`backend/interactions/models.py`): a call, meeting, email, WhatsApp message or
   SMS logged on a record, or an enquiry a lead made. It links to any of a lead, contact, account,

@@ -183,6 +183,7 @@ INVOICE_LIST = SavedList(
             "account",
             "contact",
             "opportunity",
+            "sales_channel",
             "assigned_to",
             "created_by",
             "issue_date_gte",

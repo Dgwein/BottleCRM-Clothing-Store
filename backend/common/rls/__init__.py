@@ -100,6 +100,20 @@ ORG_SCOPED_TABLES = [
     "recurring_invoice_line_item",
     # Products
     "product",
+    # Catalog: products with variants, attributes and platform listings,
+    # stamped by catalog/0002.
+    "catalog_sales_channel",
+    "catalog_category",
+    "catalog_attribute",
+    "catalog_attribute_option",
+    "catalog_category_attribute",
+    "catalog_channel_attribute",
+    "catalog_product",
+    "catalog_attribute_value",
+    "catalog_listing",
+    "catalog_listing_variant",
+    "catalog_import_run",
+    "catalog_import_file",
     # Orders
     "orders",
     "order_line_item",

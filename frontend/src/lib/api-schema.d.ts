@@ -1978,6 +1978,414 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/catalog/attribute-options/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["catalog_attribute_options_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_attribute_options_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/attributes/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_attributes_retrieve"];
+        put?: never;
+        post: operations["catalog_attributes_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/attributes/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["catalog_attributes_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_attributes_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/attributes/{id}/options/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["catalog_attributes_options_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/categories/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_categories_retrieve"];
+        put?: never;
+        post: operations["catalog_categories_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/categories/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["catalog_categories_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_categories_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/categories/{id}/attributes/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["catalog_categories_attributes_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/category-attributes/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["catalog_category_attributes_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_category_attributes_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/channels/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_channels_retrieve"];
+        put?: never;
+        post: operations["catalog_channels_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/channels/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["catalog_channels_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_channels_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/import/runs/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Imports are for admins only, reads included: a report quotes the rows
+         *     of the files it read.
+         */
+        get: operations["catalog_import_runs_list"];
+        put?: never;
+        /**
+         * @description Check and store the files, queue the run, and answer at once; the
+         *     run's page follows it. Nothing is stored when anything is refused.
+         */
+        post: operations["catalog_import_runs_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/import/runs/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Imports are for admins only, reads included: a report quotes the rows
+         *     of the files it read.
+         */
+        get: operations["catalog_import_runs_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/import/runs/{id}/import/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Import the files a finished preview checked, without sending them
+         *     again.
+         */
+        post: operations["catalog_import_runs_import_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/import/sources/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Imports are for admins only, reads included: a report quotes the rows
+         *     of the files it read.
+         */
+        get: operations["catalog_import_sources_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/listing-variants/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["catalog_listing_variants_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_listing_variants_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/listings/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_listings_retrieve"];
+        put?: never;
+        post: operations["catalog_listings_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/listings/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["catalog_listings_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_listings_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/listings/{id}/variants/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["catalog_listings_variants_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_products_list"];
+        put?: never;
+        post: operations["catalog_products_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/products/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_products_retrieve"];
+        put?: never;
+        post?: never;
+        delete: operations["catalog_products_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_products_partial_update"];
+        trace?: never;
+    };
+    "/api/catalog/products/{id}/variants/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["catalog_products_variants_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/sizes/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description The sizes the org's variants come in, youngest first, for pickers and
+         *     filters. Only sizes some variant has: no product needs all of them.
+         */
+        get: operations["catalog_sizes_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/variants/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_variants_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/catalog/variants/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["catalog_variants_retrieve"];
+        put?: never;
+        post?: never;
+        delete: operations["catalog_variants_destroy"];
+        options?: never;
+        head?: never;
+        patch: operations["catalog_variants_partial_update"];
+        trace?: never;
+    };
     "/api/contacts/": {
         parameters: {
             query?: never;
@@ -6816,6 +7224,60 @@ export interface components {
             /** Format: uuid */
             org: string;
         };
+        Attribute: {
+            /** Format: uuid */
+            readonly id: string;
+            code: string;
+            name: string;
+            data_type: components["schemas"]["DataTypeEnum"];
+            /**
+             * Takes several values
+             * @description Only option lists can hold several values, one row per option.
+             */
+            is_multivalued: boolean;
+            /** Default unit */
+            unit: string;
+            readonly options: components["schemas"]["AttributeOption"][];
+            readonly channel_codes: components["schemas"]["ChannelAttribute"][];
+        };
+        AttributeList: {
+            results: components["schemas"]["Attribute"][];
+        };
+        AttributeOption: {
+            /** Format: uuid */
+            readonly id: string;
+            value: string;
+            aliases: string[];
+            sort_order: number;
+        };
+        AttributeOptionRequest: {
+            value: string;
+            aliases?: string[];
+            sort_order?: number;
+        };
+        AttributeRequest: {
+            code: string;
+            name: string;
+            data_type: components["schemas"]["DataTypeEnum"];
+            /**
+             * Takes several values
+             * @description Only option lists can hold several values, one row per option.
+             */
+            is_multivalued?: boolean;
+            /** Default unit */
+            unit?: string;
+        };
+        /**
+         * @description Every stored row of one attribute, folded into one entry. `value` is a
+         *     string, number or bool, or a list of strings for a multi-valued list.
+         */
+        AttributeValue: {
+            code: string;
+            name: string;
+            data_type: string;
+            value: unknown;
+            unit: string;
+        };
         AuditLogActor: {
             id: string;
             name: string;
@@ -6937,6 +7399,12 @@ export interface components {
             /** @description planned, done, undone, failed or skipped */
             status: string;
             text: string;
+        };
+        Axis: {
+            code: string;
+            name: string;
+            is_required: boolean;
+            options: string[];
         };
         /**
          * @description * `GB` - United Kingdom
@@ -8133,6 +8601,201 @@ export interface components {
             cases: components["schemas"]["Case"][];
             count: number;
         };
+        CatalogListingPage: {
+            results: components["schemas"]["Listing"][];
+            count: number;
+            /** Format: uri */
+            next: string | null;
+            /** Format: uri */
+            previous: string | null;
+        };
+        CatalogProduct: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly name: string;
+            readonly description: string;
+            readonly category: components["schemas"]["CategoryRef"];
+            readonly is_active: boolean;
+            readonly sizes: string[];
+            readonly axes: components["schemas"]["Axis"][];
+            readonly attributes: components["schemas"]["AttributeValue"][];
+            readonly variants: components["schemas"]["CatalogVariant"][];
+            readonly listings: components["schemas"]["Listing"][];
+            /** Format: date-time */
+            readonly created_at: string;
+            /**
+             * Last Modified At
+             * Format: date-time
+             */
+            readonly updated_at: string;
+        };
+        CatalogProductList: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly name: string;
+            readonly category: components["schemas"]["CategoryRef"];
+            readonly is_active: boolean;
+            readonly variant_count: number;
+            readonly active_variant_count: number;
+            readonly stock: number;
+            readonly sizes: string[];
+            readonly listing_count: number;
+            /** Format: decimal */
+            readonly price_min: string | null;
+            /** Format: decimal */
+            readonly price_max: string | null;
+            readonly currency: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        CatalogProductPage: {
+            results: components["schemas"]["CatalogProductList"][];
+            count: number;
+            /** Format: uri */
+            next: string | null;
+            /** Format: uri */
+            previous: string | null;
+        };
+        CatalogProductWriteRequest: {
+            name: string;
+            description?: string;
+            /** Format: uuid */
+            category: string;
+            is_active?: boolean;
+            attributes?: unknown;
+        };
+        CatalogSize: {
+            size: string;
+            variant_count: number;
+        };
+        CatalogSizeList: {
+            results: components["schemas"]["CatalogSize"][];
+        };
+        /**
+         * @description One variant: its size and stock, its other axis values, its own
+         *     characteristics, its one price and the listings that publish it.
+         */
+        CatalogVariant: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly product: string;
+            /** Product Name */
+            readonly name: string;
+            readonly size: string;
+            readonly stock: number;
+            /** Format: decimal */
+            readonly price: string;
+            readonly currency: (components["schemas"]["CurrencyEnum"] | components["schemas"]["NullEnum"]) | null;
+            readonly sku: string | null;
+            readonly gtin: string;
+            readonly is_active: boolean;
+            readonly axes: {
+                [key: string]: string;
+            };
+            readonly attributes: components["schemas"]["AttributeValue"][];
+            /** Format: decimal */
+            readonly package_height_cm: string | null;
+            /** Format: decimal */
+            readonly package_width_cm: string | null;
+            /** Format: decimal */
+            readonly package_depth_cm: string | null;
+            /** Format: decimal */
+            readonly package_weight_kg: string | null;
+            readonly listings: components["schemas"]["VariantListing"][];
+        };
+        CatalogVariantPage: {
+            results: components["schemas"]["CatalogVariant"][];
+            count: number;
+            /** Format: uri */
+            next: string | null;
+            /** Format: uri */
+            previous: string | null;
+        };
+        /**
+         * @description A variant's columns. A variant always has a price above zero; size
+         *     defaults to "Unique" and stock to 0. The currency is not sent: every
+         *     price is in the org's currency.
+         */
+        CatalogVariantWriteRequest: {
+            /** Format: decimal */
+            price: string;
+            size?: string;
+            stock?: number;
+            sku?: string | null;
+            gtin?: string;
+            is_active?: boolean;
+            /** Format: decimal */
+            package_height_cm?: string | null;
+            /** Format: decimal */
+            package_width_cm?: string | null;
+            /** Format: decimal */
+            package_depth_cm?: string | null;
+            /** Format: decimal */
+            package_weight_kg?: string | null;
+            attributes?: unknown;
+        };
+        Category: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            /** Format: uuid */
+            parent: string | null;
+            readonly attributes: components["schemas"]["CategoryAttribute"][];
+            readonly product_count: number;
+        };
+        CategoryAttribute: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            attribute: string;
+            readonly code: string;
+            readonly name: string;
+            readonly data_type: string;
+            role: components["schemas"]["CategoryAttributeRoleEnum"];
+            is_required: boolean;
+            sort_order: number;
+        };
+        CategoryAttributeRequest: {
+            /** Format: uuid */
+            attribute: string;
+            role: components["schemas"]["CategoryAttributeRoleEnum"];
+            is_required?: boolean;
+            sort_order?: number;
+        };
+        /**
+         * @description * `VARIANT_AXIS` - Variant axis
+         *     * `CHARACTERISTIC` - Characteristic
+         * @enum {string}
+         */
+        CategoryAttributeRoleEnum: "VARIANT_AXIS" | "CHARACTERISTIC";
+        CategoryList: {
+            results: components["schemas"]["Category"][];
+        };
+        CategoryRef: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly name: string;
+        };
+        CategoryRequest: {
+            name: string;
+            /** Format: uuid */
+            parent?: string | null;
+        };
+        ChannelAttribute: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly channel: string;
+            readonly channel_code: string;
+            /** Channel code */
+            readonly external_code: string;
+            /**
+             * Channel domain
+             * @default
+             */
+            readonly external_domain: string;
+        };
         /**
          * @description * `GB` - United Kingdom
          *     * `AF` - Afghanistan
@@ -8447,6 +9110,12 @@ export interface components {
             profile_pic: string | null;
             name: string | null;
         };
+        /**
+         * @description * `NEW` - New
+         *     * `USED` - Used
+         * @enum {string}
+         */
+        ConditionEnum: "NEW" | "USED";
         /** @description Serializer for reading Contact data */
         Contact: {
             /** Format: uuid */
@@ -9204,6 +9873,14 @@ export interface components {
             readonly timestamp: string;
             readonly humanized_time: string;
         };
+        /**
+         * @description * `TEXT` - Text
+         *     * `NUMBER` - Number
+         *     * `BOOLEAN` - Yes or no
+         *     * `OPTION` - Option list
+         * @enum {string}
+         */
+        DataTypeEnum: "TEXT" | "NUMBER" | "BOOLEAN" | "OPTION";
         /**
          * @description A person on the deal detail page: the picker's name, plus role.
          *
@@ -10261,11 +10938,116 @@ export interface components {
             label: string;
             required: boolean;
         };
+        ImportFileSpec: {
+            field: string;
+            label: string;
+        };
         ImportMappedSummary: {
             total: number;
             valid: number;
             skipped: number;
         };
+        ImportPreviewedRequest: {
+            notify?: boolean;
+        };
+        ImportReport: {
+            created: {
+                [key: string]: number;
+            };
+            updated: {
+                [key: string]: number;
+            };
+            notes: {
+                [key: string]: number;
+            };
+            empty_categories: components["schemas"]["_EmptyCategory"][];
+            warnings: string[];
+            rejected: string[];
+        };
+        ImportRun: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly source: string;
+            readonly source_name: string;
+            /** Preview */
+            readonly dry_run: boolean;
+            readonly status: components["schemas"]["ImportRunStatusEnum"];
+            /**
+             * Email the report
+             * @description Asked for when it was started; a long run is emailed anyway.
+             */
+            readonly notify: boolean;
+            readonly file_names: {
+                [key: string]: string;
+            };
+            /** @description Whether a finished preview's files can still be imported. */
+            readonly files_kept: boolean;
+            readonly started_by: string;
+            readonly error: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly started_at: string | null;
+            /** Format: date-time */
+            readonly finished_at: string | null;
+            /** Format: date-time */
+            readonly emailed_at: string | null;
+        };
+        ImportRunDetail: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly source: string;
+            readonly source_name: string;
+            /** Preview */
+            readonly dry_run: boolean;
+            readonly status: components["schemas"]["ImportRunStatusEnum"];
+            /**
+             * Email the report
+             * @description Asked for when it was started; a long run is emailed anyway.
+             */
+            readonly notify: boolean;
+            readonly file_names: {
+                [key: string]: string;
+            };
+            /** @description Whether a finished preview's files can still be imported. */
+            readonly files_kept: boolean;
+            readonly started_by: string;
+            readonly error: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly started_at: string | null;
+            /** Format: date-time */
+            readonly finished_at: string | null;
+            /** Format: date-time */
+            readonly emailed_at: string | null;
+            readonly report: components["schemas"]["ImportReport"] | null;
+        };
+        ImportRunPage: {
+            results: components["schemas"]["ImportRun"][];
+            count: number;
+            /** Format: uri */
+            next: string | null;
+            /** Format: uri */
+            previous: string | null;
+        };
+        ImportRunStartRequest: {
+            source: string;
+            dry_run: boolean;
+            notify?: boolean;
+            /** Format: binary */
+            characteristics?: string;
+            /** Format: binary */
+            prices?: string;
+        };
+        /**
+         * @description * `QUEUED` - Queued
+         *     * `RUNNING` - Running
+         *     * `DONE` - Done
+         *     * `FAILED` - Failed
+         * @enum {string}
+         */
+        ImportRunStatusEnum: "QUEUED" | "RUNNING" | "DONE" | "FAILED";
         ImportSkippedRow: {
             row: number;
             field: string;
@@ -10273,6 +11055,21 @@ export interface components {
             cells: string[];
             /** @description "duplicate" or "row" */
             kind: string;
+        };
+        /**
+         * @description A channel whose report can be imported (`available`), or one that
+         *     cannot yet, and why.
+         */
+        ImportSource: {
+            code: string;
+            name: string;
+            available: boolean;
+            reason: string;
+            files: components["schemas"]["ImportFileSpec"][];
+            channel: components["schemas"]["SalesChannelRef"] | null;
+        };
+        ImportSourceList: {
+            results: components["schemas"]["ImportSource"][];
         };
         InboundCatchAllResponse: {
             ok: boolean;
@@ -10546,6 +11343,7 @@ export interface components {
             readonly opportunity: components["schemas"]["OpportunityMinimal"] | null;
             /** Format: uuid */
             readonly project: string | null;
+            readonly sales_channel: components["schemas"]["SalesChannelRef"] | null;
             client_name: string;
             /** Format: email */
             client_email: string;
@@ -10665,6 +11463,8 @@ export interface components {
             contact_id: string;
             /** Format: uuid */
             opportunity_id?: string | null;
+            /** Format: uuid */
+            sales_channel_id?: string | null;
             client_name?: string;
             /** Format: email */
             client_email?: string;
@@ -10931,6 +11731,7 @@ export interface components {
              */
             account: string | null;
             readonly account_name?: string;
+            readonly sales_channel: components["schemas"]["SalesChannelRef"] | null;
             /** Format: uuid */
             readonly project: string | null;
             /**
@@ -11914,6 +12715,72 @@ export interface components {
             id: string;
             /** Format: email */
             user__email: string;
+        };
+        Listing: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly channel: string;
+            readonly channel_code: string;
+            readonly channel_name: string;
+            /** Format: uuid */
+            readonly product: string;
+            /** Channel id */
+            readonly external_id: string;
+            /** Channel group id */
+            readonly external_group_id: string;
+            /** Channel category */
+            readonly external_category_id: string;
+            /** Channel domain */
+            readonly external_domain: string;
+            readonly title: string;
+            readonly status: string;
+            readonly condition: string;
+            readonly listing_type: string;
+            /** Shipping */
+            readonly shipping_mode: string;
+            readonly free_shipping: boolean;
+            readonly warranty: string;
+            /** Days to ship */
+            readonly handling_days: number | null;
+            readonly variant_count: number;
+        };
+        /**
+         * @description * `ACTIVE` - Active
+         *     * `INACTIVE` - Inactive
+         * @enum {string}
+         */
+        ListingStatusEnum: "ACTIVE" | "INACTIVE";
+        ListingVariantWriteRequest: {
+            /** Format: uuid */
+            variant: string;
+            external_variation_id?: string;
+            external_product_id?: string;
+            external_sku?: string;
+        };
+        ListingWriteRequest: {
+            /** Format: uuid */
+            channel: string;
+            /** Format: uuid */
+            product: string;
+            /** Channel id */
+            external_id: string;
+            /** Channel group id */
+            external_group_id?: string;
+            /** Channel category */
+            external_category_id?: string;
+            /** Channel domain */
+            external_domain?: string;
+            title: string;
+            status?: components["schemas"]["ListingStatusEnum"] | components["schemas"]["BlankEnum"];
+            condition?: components["schemas"]["ConditionEnum"] | components["schemas"]["BlankEnum"];
+            listing_type?: string;
+            /** Shipping */
+            shipping_mode?: string;
+            free_shipping?: boolean;
+            warranty?: string;
+            /** Days to ship */
+            handling_days?: number | null;
         };
         LogoutRequestRequest: {
             /** @description Refresh token */
@@ -12955,6 +13822,23 @@ export interface components {
             approver_ids?: string[];
             is_active?: boolean;
         };
+        PatchedAttributeOptionRequest: {
+            value?: string;
+            aliases?: string[];
+            sort_order?: number;
+        };
+        PatchedAttributeRequest: {
+            code?: string;
+            name?: string;
+            data_type?: components["schemas"]["DataTypeEnum"];
+            /**
+             * Takes several values
+             * @description Only option lists can hold several values, one row per option.
+             */
+            is_multivalued?: boolean;
+            /** Default unit */
+            unit?: string;
+        };
         /** @description Serializer for boards */
         PatchedBoardRequest: {
             name?: string;
@@ -13091,6 +13975,49 @@ export interface components {
             maps_to_status?: (components["schemas"]["CaseStatusEnum"] | components["schemas"]["BlankEnum"] | components["schemas"]["NullEnum"]) | null;
             /** @description Maximum cases allowed in this stage (null = unlimited) */
             wip_limit?: number | null;
+        };
+        PatchedCatalogProductWriteRequest: {
+            name?: string;
+            description?: string;
+            /** Format: uuid */
+            category?: string;
+            is_active?: boolean;
+            attributes?: unknown;
+        };
+        /**
+         * @description A variant's columns. A variant always has a price above zero; size
+         *     defaults to "Unique" and stock to 0. The currency is not sent: every
+         *     price is in the org's currency.
+         */
+        PatchedCatalogVariantWriteRequest: {
+            /** Format: decimal */
+            price?: string;
+            size?: string;
+            stock?: number;
+            sku?: string | null;
+            gtin?: string;
+            is_active?: boolean;
+            /** Format: decimal */
+            package_height_cm?: string | null;
+            /** Format: decimal */
+            package_width_cm?: string | null;
+            /** Format: decimal */
+            package_depth_cm?: string | null;
+            /** Format: decimal */
+            package_weight_kg?: string | null;
+            attributes?: unknown;
+        };
+        PatchedCategoryAttributeRequest: {
+            /** Format: uuid */
+            attribute?: string;
+            role?: components["schemas"]["CategoryAttributeRoleEnum"];
+            is_required?: boolean;
+            sort_order?: number;
+        };
+        PatchedCategoryRequest: {
+            name?: string;
+            /** Format: uuid */
+            parent?: string | null;
         };
         PatchedContactCommentEditSwaggerRequest: {
             comment?: string;
@@ -13328,6 +14255,8 @@ export interface components {
             contact_id?: string;
             /** Format: uuid */
             opportunity_id?: string | null;
+            /** Format: uuid */
+            sales_channel_id?: string | null;
             client_name?: string;
             /** Format: email */
             client_email?: string;
@@ -13545,6 +14474,37 @@ export interface components {
             win_probability?: number;
             /** @description Maximum leads allowed in this stage (null = unlimited) */
             wip_limit?: number | null;
+        };
+        PatchedListingVariantWriteRequest: {
+            /** Format: uuid */
+            variant?: string;
+            external_variation_id?: string;
+            external_product_id?: string;
+            external_sku?: string;
+        };
+        PatchedListingWriteRequest: {
+            /** Format: uuid */
+            channel?: string;
+            /** Format: uuid */
+            product?: string;
+            /** Channel id */
+            external_id?: string;
+            /** Channel group id */
+            external_group_id?: string;
+            /** Channel category */
+            external_category_id?: string;
+            /** Channel domain */
+            external_domain?: string;
+            title?: string;
+            status?: components["schemas"]["ListingStatusEnum"] | components["schemas"]["BlankEnum"];
+            condition?: components["schemas"]["ConditionEnum"] | components["schemas"]["BlankEnum"];
+            listing_type?: string;
+            /** Shipping */
+            shipping_mode?: string;
+            free_shipping?: boolean;
+            warranty?: string;
+            /** Days to ship */
+            handling_days?: number | null;
         };
         /**
          * @description Serialize Macro for read and write paths.
@@ -13900,6 +14860,26 @@ export interface components {
             actions?: unknown;
             is_active?: boolean;
             position?: number;
+        };
+        /**
+         * @description An online channel has a market id and no address; a physical store the
+         *     other way round. A channel that publishes listings stays online.
+         */
+        PatchedSalesChannelRequest: {
+            name?: string;
+            code?: string;
+            kind?: components["schemas"]["SalesChannelKindEnum"];
+            /** @description An online channel's own market id, such as MLM. */
+            site?: string;
+            /** Address */
+            address_line?: string;
+            city?: string;
+            state?: string;
+            /** Postal code */
+            postcode?: string;
+            country?: components["schemas"]["CountryEnum"] | components["schemas"]["BlankEnum"];
+            phone?: string;
+            is_active?: boolean;
         };
         /**
          * @description Write serializer for SalesGoal (create + partial update).
@@ -14430,6 +15410,8 @@ export interface components {
             currency: (components["schemas"]["CurrencyEnum"] | components["schemas"]["BlankEnum"] | components["schemas"]["NullEnum"]) | null;
             category: string | null;
             is_active: boolean;
+            /** Format: uuid */
+            readonly catalog_product: string | null;
             /**
              * @description Distinct invoices this product is a line item on.
              *
@@ -15584,6 +16566,66 @@ export interface components {
             Message: string;
             Signature: string;
             SigningCertURL: string;
+        };
+        /**
+         * @description An online channel has a market id and no address; a physical store the
+         *     other way round. A channel that publishes listings stays online.
+         */
+        SalesChannel: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            code: string;
+            kind: components["schemas"]["SalesChannelKindEnum"];
+            /** @description An online channel's own market id, such as MLM. */
+            site: string;
+            /** Address */
+            address_line: string;
+            city: string;
+            state: string;
+            /** Postal code */
+            postcode: string;
+            country: components["schemas"]["CountryEnum"] | components["schemas"]["BlankEnum"];
+            phone: string;
+            is_active: boolean;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        /**
+         * @description * `ONLINE` - Online
+         *     * `STORE` - Physical store
+         * @enum {string}
+         */
+        SalesChannelKindEnum: "ONLINE" | "STORE";
+        SalesChannelList: {
+            results: components["schemas"]["SalesChannel"][];
+        };
+        /** @description A channel as a sale records it: enough to name it. */
+        SalesChannelRef: {
+            /** Format: uuid */
+            readonly id: string;
+            readonly name: string;
+            readonly kind: components["schemas"]["SalesChannelKindEnum"];
+        };
+        /**
+         * @description An online channel has a market id and no address; a physical store the
+         *     other way round. A channel that publishes listings stays online.
+         */
+        SalesChannelRequest: {
+            name: string;
+            code: string;
+            kind?: components["schemas"]["SalesChannelKindEnum"];
+            /** @description An online channel's own market id, such as MLM. */
+            site?: string;
+            /** Address */
+            address_line?: string;
+            city?: string;
+            state?: string;
+            /** Postal code */
+            postcode?: string;
+            country?: components["schemas"]["CountryEnum"] | components["schemas"]["BlankEnum"];
+            phone?: string;
+            is_active?: boolean;
         };
         SalesGoal: {
             /** Format: uuid */
@@ -16945,6 +17987,19 @@ export interface components {
             roles: string[][];
             status: string[][];
         };
+        /** @description Where a variant is published, under the channel's ids. */
+        VariantListing: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly listing: string;
+            readonly channel: string;
+            readonly listing_external_id: string;
+            readonly listing_status: string;
+            readonly external_variation_id: string;
+            readonly external_product_id: string;
+            readonly external_sku: string;
+        };
         WebFormAnalyticsDay: {
             /** Format: date */
             date: string;
@@ -17256,6 +18311,12 @@ export interface components {
         WebhookRotateSecretResponse: {
             secret: string;
             secret_hint: string;
+        };
+        _EmptyCategory: {
+            category: string;
+            sheet: string;
+            rows: number;
+            rejected: number;
         };
         /**
          * @description A deal's line on a board card: the mobile card counts them. Plain
@@ -21203,6 +22264,974 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CaseWatchingResponse"];
+                };
+            };
+        };
+    };
+    catalog_attribute_options_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_attribute_options_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedAttributeOptionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedAttributeOptionRequest"];
+                "multipart/form-data": components["schemas"]["PatchedAttributeOptionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttributeOption"];
+                };
+            };
+        };
+    };
+    catalog_attributes_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttributeList"];
+                };
+            };
+        };
+    };
+    catalog_attributes_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AttributeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AttributeRequest"];
+                "multipart/form-data": components["schemas"]["AttributeRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Attribute"];
+                };
+            };
+        };
+    };
+    catalog_attributes_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_attributes_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedAttributeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedAttributeRequest"];
+                "multipart/form-data": components["schemas"]["PatchedAttributeRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Attribute"];
+                };
+            };
+        };
+    };
+    catalog_attributes_options_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AttributeOptionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AttributeOptionRequest"];
+                "multipart/form-data": components["schemas"]["AttributeOptionRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttributeOption"];
+                };
+            };
+        };
+    };
+    catalog_categories_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryList"];
+                };
+            };
+        };
+    };
+    catalog_categories_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CategoryRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CategoryRequest"];
+                "multipart/form-data": components["schemas"]["CategoryRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Category"];
+                };
+            };
+        };
+    };
+    catalog_categories_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_categories_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedCategoryRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedCategoryRequest"];
+                "multipart/form-data": components["schemas"]["PatchedCategoryRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Category"];
+                };
+            };
+        };
+    };
+    catalog_categories_attributes_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CategoryAttributeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CategoryAttributeRequest"];
+                "multipart/form-data": components["schemas"]["CategoryAttributeRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryAttribute"];
+                };
+            };
+        };
+    };
+    catalog_category_attributes_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_category_attributes_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedCategoryAttributeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedCategoryAttributeRequest"];
+                "multipart/form-data": components["schemas"]["PatchedCategoryAttributeRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryAttribute"];
+                };
+            };
+        };
+    };
+    catalog_channels_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesChannelList"];
+                };
+            };
+        };
+    };
+    catalog_channels_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SalesChannelRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["SalesChannelRequest"];
+                "multipart/form-data": components["schemas"]["SalesChannelRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesChannel"];
+                };
+            };
+        };
+    };
+    catalog_channels_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_channels_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedSalesChannelRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedSalesChannelRequest"];
+                "multipart/form-data": components["schemas"]["PatchedSalesChannelRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesChannel"];
+                };
+            };
+        };
+    };
+    catalog_import_runs_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportRunPage"];
+                };
+            };
+        };
+    };
+    catalog_import_runs_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["ImportRunStartRequest"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportRunDetail"];
+                };
+            };
+        };
+    };
+    catalog_import_runs_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportRunDetail"];
+                };
+            };
+        };
+    };
+    catalog_import_runs_import_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ImportPreviewedRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ImportPreviewedRequest"];
+                "multipart/form-data": components["schemas"]["ImportPreviewedRequest"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportRunDetail"];
+                };
+            };
+        };
+    };
+    catalog_import_sources_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportSourceList"];
+                };
+            };
+        };
+    };
+    catalog_listing_variants_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_listing_variants_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedListingVariantWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedListingVariantWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedListingVariantWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VariantListing"];
+                };
+            };
+        };
+    };
+    catalog_listings_retrieve: {
+        parameters: {
+            query?: {
+                channel?: string;
+                product?: string;
+                status?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogListingPage"];
+                };
+            };
+        };
+    };
+    catalog_listings_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ListingWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ListingWriteRequest"];
+                "multipart/form-data": components["schemas"]["ListingWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Listing"];
+                };
+            };
+        };
+    };
+    catalog_listings_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_listings_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedListingWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedListingWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedListingWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Listing"];
+                };
+            };
+        };
+    };
+    catalog_listings_variants_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ListingVariantWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ListingVariantWriteRequest"];
+                "multipart/form-data": components["schemas"]["ListingVariantWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VariantListing"];
+                };
+            };
+        };
+    };
+    catalog_products_list: {
+        parameters: {
+            query?: {
+                /** @description code:value, repeatable. One code's values are alternatives; different codes must all match. */
+                attr?: string[];
+                category?: string;
+                channel?: string;
+                /** @description true: stock above 0. false: none left. */
+                in_stock?: boolean;
+                is_active?: boolean;
+                search?: string;
+                /** @description Repeatable; any of these sizes. */
+                size?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogProductPage"];
+                };
+            };
+        };
+    };
+    catalog_products_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CatalogProductWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CatalogProductWriteRequest"];
+                "multipart/form-data": components["schemas"]["CatalogProductWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogProduct"];
+                };
+            };
+        };
+    };
+    catalog_products_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogProduct"];
+                };
+            };
+        };
+    };
+    catalog_products_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_products_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedCatalogProductWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedCatalogProductWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedCatalogProductWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogProduct"];
+                };
+            };
+        };
+    };
+    catalog_products_variants_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CatalogVariantWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CatalogVariantWriteRequest"];
+                "multipart/form-data": components["schemas"]["CatalogVariantWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogVariant"];
+                };
+            };
+        };
+    };
+    catalog_sizes_retrieve: {
+        parameters: {
+            query?: {
+                category?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogSizeList"];
+                };
+            };
+        };
+    };
+    catalog_variants_list: {
+        parameters: {
+            query?: {
+                /** @description code:value, repeatable. One code's values are alternatives; different codes must all match. */
+                attr?: string[];
+                category?: string;
+                /** @description true: stock above 0. false: none left. */
+                in_stock?: boolean;
+                is_active?: boolean;
+                product?: string;
+                search?: string;
+                /** @description Repeatable; any of these sizes. */
+                size?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogVariantPage"];
+                };
+            };
+        };
+    };
+    catalog_variants_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogVariant"];
+                };
+            };
+        };
+    };
+    catalog_variants_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    catalog_variants_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedCatalogVariantWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedCatalogVariantWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedCatalogVariantWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogVariant"];
                 };
             };
         };

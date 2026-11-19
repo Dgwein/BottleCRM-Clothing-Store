@@ -16,14 +16,25 @@ const modules = (off: string[]) =>
 const labels = (tabs: any[]) => tabs.map((t) => t.label);
 
 describe('visibleTabs', () => {
-  it('keeps Products while invoices or deals is on, and hides admin tabs from members', () => {
+  it('keeps Catalog and Products while invoices or deals is on, and hides admin tabs from members', () => {
     const only = (off: string[]) =>
       labels(visibleTabs('invoices', { isAdmin: false, modules: modules(off) }));
-    expect(only(['invoices'])).toEqual(['Products']);
+    expect(only(['invoices'])).toEqual(['Catalog', 'Products']);
     expect(only(['deals'])).toContain('Products');
+    expect(only(['deals'])).toContain('Catalog');
     expect(only(['invoices', 'deals'])).toEqual([]);
     expect(only([])).not.toContain('Reports');
     expect(labels(visibleTabs('invoices', { isAdmin: true, modules: null }))).toContain('Reports');
+    const catalog = (isAdmin: boolean) =>
+      labels(visibleTabs('catalog', { isAdmin, modules: modules([]) }));
+    expect(catalog(true)).toEqual([
+      'Products',
+      'Categories',
+      'Attributes',
+      'Sales channels',
+      'Import'
+    ]);
+    expect(catalog(false)).not.toContain('Import');
   });
 
   it('drops a set whose module is off and keeps everything for a null list', () => {

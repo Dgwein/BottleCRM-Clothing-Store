@@ -115,7 +115,7 @@
 
   /**
    * The Node adapter refuses a body over BODY_SIZE_LIMIT (512K unless the
-   * deploy sets it; the image sets 6M) with a plain-text 413 before the
+   * deploy sets it; the image sets 45M) with a plain-text 413 before the
    * action runs, which `deserialize` cannot parse.
    */
   async function readResult(res: Response): Promise<ImportAnswer> {

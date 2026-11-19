@@ -14,6 +14,30 @@ import { isOn, type ModuleRow } from '#lib/v2/modules.js';
  * member. SectionTabs hides it for non-admins so they are not offered a tab
  * that only turns them away. The backend still enforces the gate; this is UX.
  */
+type Tab = {
+  href: string;
+  label: string;
+  exact?: boolean;
+  count?: string;
+  module?: string;
+  admin?: boolean;
+  anyOf?: string[];
+};
+
+/** The catalog's own pages, under Invoices › Catalog; on with the products. */
+const CATALOG_TABS: Tab[] = [
+  { href: '/invoices/catalog', label: 'Products', exact: true, anyOf: ['invoices', 'deals'] },
+  { href: '/invoices/catalog/categories', label: 'Categories', anyOf: ['invoices', 'deals'] },
+  { href: '/invoices/catalog/attributes', label: 'Attributes', anyOf: ['invoices', 'deals'] },
+  { href: '/invoices/catalog/channels', label: 'Sales channels', anyOf: ['invoices', 'deals'] },
+  {
+    href: '/invoices/catalog/import',
+    label: 'Import',
+    admin: true,
+    anyOf: ['invoices', 'deals']
+  }
+];
+
 export const TAB_SETS = {
   tickets: [
     { href: '/tickets', label: 'Queue', exact: true, count: 'tickets', module: 'tickets' },
@@ -32,10 +56,12 @@ export const TAB_SETS = {
     { href: '/tasks/board', label: 'Boards', module: 'tasks' },
     { href: '/tasks/calendar', label: 'Calendar', module: 'tasks' }
   ],
+  catalog: CATALOG_TABS,
   invoices: [
     { href: '/invoices', label: 'Invoices', exact: true, count: 'invoices', module: 'invoices' },
     { href: '/invoices/estimates', label: 'Estimates', module: 'invoices' },
     { href: '/invoices/recurring', label: 'Recurring', module: 'invoices' },
+    { href: '/invoices/catalog', label: 'Catalog', anyOf: ['invoices', 'deals'] },
     { href: '/invoices/products', label: 'Products', anyOf: ['invoices', 'deals'] },
     { href: '/invoices/reports', label: 'Reports', admin: true, module: 'invoices' },
     { href: '/invoices/templates', label: 'Templates', module: 'invoices' }

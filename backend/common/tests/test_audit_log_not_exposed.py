@@ -31,6 +31,7 @@ ALLOWED = {
     "common/migrations",  # schema history
     "common/tests",  # this guard, plus one pack test asserting a row was written
     "webhooks/tests",  # asserts the pause and re-enable rows are written
+    "catalog/tests",  # asserts the ORG_DELETED row is written
     # Serves rows to admins. Filters on `org=request.profile.org` explicitly and
     # returns an allow-list of fields; pinned by common/tests/test_audit_log_api.py.
     "common/views/audit_log_views.py",

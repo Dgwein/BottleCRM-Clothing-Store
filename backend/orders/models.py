@@ -59,6 +59,14 @@ class Order(BaseOrgModel):
         blank=True,
         help_text="The opportunity this order originated from",
     )
+    sales_channel = models.ForeignKey(
+        "catalog.SalesChannel",
+        on_delete=models.PROTECT,
+        related_name="orders",
+        null=True,
+        blank=True,
+        help_text="The channel the sale came through; the account is the customer",
+    )
 
     # Financial
     currency = models.CharField(_("Currency"), max_length=3, blank=True, default="")

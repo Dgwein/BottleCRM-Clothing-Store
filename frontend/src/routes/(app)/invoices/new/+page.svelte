@@ -81,6 +81,7 @@
 
   let accountId = $state('');
   let contactId = $state('');
+  let salesChannelId = $state('');
   let title = $state('');
   // The org's day: a UTC date is yesterday for a morning east of UTC. The
   // server dates a new number by the day it is saved, not by the issue date,
@@ -177,6 +178,7 @@
     if (num(taxRate)) body.tax_rate = num(taxRate);
     if (num(shipping)) body.shipping_amount = num(shipping);
     if (notes.trim()) body.notes = notes.trim();
+    if (salesChannelId) body.sales_channel_id = salesChannelId;
     return body;
   });
 </script>
@@ -250,6 +252,18 @@
                 {#each contactOptions as c (c.id)}
                   <option value={c.id}
                     >{c.name}{c.account_name ? ` · ${c.account_name}` : ''}</option
+                  >
+                {/each}
+              </select>
+            </label>
+
+            <label class="f">
+              <span>Sales channel</span>
+              <select bind:value={salesChannelId}>
+                <option value="">Not recorded</option>
+                {#each data.channels as c (c.id)}
+                  <option value={c.id}
+                    >{c.name}{c.kind === 'STORE' ? ' (physical store)' : ''}</option
                   >
                 {/each}
               </select>

@@ -120,6 +120,7 @@ const ROUTES: Record<string, Requirement> = {
   '/invoices': { all: ['invoices'] },
   '/accounts/[id]/statement': { all: ['invoices'] },
   '/invoices/products': { anyOf: ['invoices', 'deals'] },
+  '/invoices/catalog': { anyOf: ['invoices', 'deals'] },
   '/documents': { all: ['documents'] }
 };
 

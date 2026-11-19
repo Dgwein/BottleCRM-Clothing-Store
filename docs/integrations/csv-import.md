@@ -84,7 +84,8 @@ while the workspace is empty. `GET /api/dashboard/` and `GET /api/dashboard/toda
 
 All four endpoints share a per-user rate limit, scope `csv_import`, set with the `IMPORT_THROTTLE`
 environment variable (default `30/minute`). The frontend must also accept a 5 MB body, which means
-`BODY_SIZE_LIMIT=6M` on the web server (see
+`BODY_SIZE_LIMIT=6M` or more on the web server (the published image sets `45M` for the catalog
+import; see
 [Environment variables](../reference/environment-variables.md#imports)).
 
 ## Leads

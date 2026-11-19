@@ -79,6 +79,8 @@ nav:
       - Authentication: architecture/authentication.md
       - Permissions and roles: architecture/permissions-and-roles.md
       - Data model: architecture/data-model.md
+      - Product catalog: architecture/catalog.md
+      - "Catalog: changes to the distribution": architecture/catalog-distro-changes.md
       - Background jobs: architecture/background-jobs.md
   - API reference:
       - Conventions: api/conventions.md

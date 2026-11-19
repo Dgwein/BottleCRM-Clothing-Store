@@ -229,6 +229,7 @@ def _sample(key):
         "opportunity",
         "pipeline",
         "created_by",
+        "sales_channel",
     }:
         return str(uuid.uuid4())
     if key.startswith("amount"):

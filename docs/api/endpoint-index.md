@@ -119,6 +119,30 @@ Interactive versions of the same schema are served by a running backend at
 | `/api/cases/{id}/unmerge/` | POST |
 | `/api/cases/{id}/watch/` | DELETE, POST |
 | `/api/cases/{id}/watchers/` | GET |
+| `/api/catalog/attribute-options/{id}/` | DELETE, PATCH |
+| `/api/catalog/attributes/` | GET, POST |
+| `/api/catalog/attributes/{id}/` | DELETE, PATCH |
+| `/api/catalog/attributes/{id}/options/` | POST |
+| `/api/catalog/categories/` | GET, POST |
+| `/api/catalog/categories/{id}/` | DELETE, PATCH |
+| `/api/catalog/categories/{id}/attributes/` | POST |
+| `/api/catalog/category-attributes/{id}/` | DELETE, PATCH |
+| `/api/catalog/channels/` | GET, POST |
+| `/api/catalog/channels/{id}/` | DELETE, PATCH |
+| `/api/catalog/import/runs/` | GET, POST |
+| `/api/catalog/import/runs/{id}/` | GET |
+| `/api/catalog/import/runs/{id}/import/` | POST |
+| `/api/catalog/import/sources/` | GET |
+| `/api/catalog/listing-variants/{id}/` | DELETE, PATCH |
+| `/api/catalog/listings/` | GET, POST |
+| `/api/catalog/listings/{id}/` | DELETE, PATCH |
+| `/api/catalog/listings/{id}/variants/` | POST |
+| `/api/catalog/products/` | GET, POST |
+| `/api/catalog/products/{id}/` | DELETE, GET, PATCH |
+| `/api/catalog/products/{id}/variants/` | POST |
+| `/api/catalog/sizes/` | GET |
+| `/api/catalog/variants/` | GET |
+| `/api/catalog/variants/{id}/` | DELETE, GET, PATCH |
 | `/api/contacts/` | GET, POST |
 | `/api/contacts/attachment/{id}/` | DELETE |
 | `/api/contacts/comment/{id}/` | DELETE, PATCH, PUT |

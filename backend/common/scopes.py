@@ -69,6 +69,9 @@ API_RESOURCES = frozenset(
         "boards",
         "business-hours",
         "cases",
+        # Products with variants, attributes, sales channels and listings. Every
+        # write under it is admin-only in the view.
+        "catalog",
         "contacts",
         "custom-fields",
         "dashboard",

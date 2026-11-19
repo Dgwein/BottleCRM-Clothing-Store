@@ -133,7 +133,7 @@
       body: fd
     });
     // The Node adapter refuses a body over BODY_SIZE_LIMIT (512K by default;
-    // the image sets 6M) with a plain-text
+    // the image sets 45M) with a plain-text
     // 413 before the action runs, which `deserialize` cannot parse.
     if (res.status === 413) return { type: 'failure', data: { importError: TOO_LARGE } };
     return deserialize(await res.text()) as ImportAnswer;

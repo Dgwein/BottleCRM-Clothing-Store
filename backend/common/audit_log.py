@@ -109,6 +109,7 @@ class SecurityAuditLog(BaseModel):
         ("APP_INSTALLED", "App Installed"),
         ("APP_UPGRADED", "App Updated"),
         ("APP_REMOVED", "App Removed"),
+        ("ORG_DELETED", "Organization Deleted"),
     )
 
     event_type = models.CharField(max_length=50, choices=EVENT_TYPES, db_index=True)
@@ -359,6 +360,25 @@ class AuditLogger:
             org=org,
             description=f"Membership revoked by {revoked_by.email if revoked_by else 'system'}",
             metadata={"revoked_by": str(revoked_by.id) if revoked_by else None},
+            request=request,
+        )
+
+    def org_deleted(self, user, org_id, name, sales, deals, request=None):
+        """Log an organization's deletion. The row outlives the org (its `org`
+        is cleared), so the id and name are kept in the metadata, with the
+        sales and deals that went with it."""
+        gone = ", ".join(f"{count} {label}" for label, count in [*sales, *deals])
+        self._log(
+            "ORG_DELETED",
+            user=user,
+            description=f"Deleted organization {name}"
+            + (f" with {gone}" if gone else ""),
+            metadata={
+                "org_id": str(org_id),
+                "org_name": name,
+                "sales": {label: count for label, count in sales},
+                "deals": sum(count for _, count in deals),
+            },
             request=request,
         )
 

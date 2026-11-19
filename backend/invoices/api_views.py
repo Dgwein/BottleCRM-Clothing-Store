@@ -385,7 +385,7 @@ def filter_invoices(queryset, params, org):
         queryset = queryset.filter(status=params.get("status"))
 
     # Filter by the related record, when one was named
-    for related in ("account", "contact", "opportunity"):
+    for related in ("account", "contact", "opportunity", "sales_channel"):
         related_id = uuid_param(params, related)
         if related_id:
             queryset = queryset.filter(**{f"{related}_id": related_id})
@@ -438,7 +438,9 @@ class InvoiceListView(APIView, CappedLimitOffsetPagination):
         """Every invoice the caller may open, before the query string."""
         return (
             visible_invoices_qs(self.request.profile)
-            .select_related("account", "contact", "opportunity", "created_by")
+            .select_related(
+                "account", "contact", "opportunity", "created_by", "sales_channel"
+            )
             .prefetch_related("line_items", "payments", "assigned_to")
         )
 
@@ -831,6 +833,12 @@ class InvoiceDuplicateView(APIView):
                 account=original.account,
                 contact=original.contact,
                 opportunity=original.opportunity,
+                # A copy is a new sale: a channel switched off takes none.
+                sales_channel=(
+                    original.sales_channel
+                    if original.sales_channel and original.sales_channel.is_active
+                    else None
+                ),
                 client_name=original.client_name,
                 client_email=original.client_email,
                 client_phone=original.client_phone,
@@ -1444,6 +1452,19 @@ class ProductDetailView(APIView):
         denied = self._require_admin(request)
         if denied:
             return denied
+
+        # A catalog variant that something sold is kept; see
+        # catalog.services.deletion_refusal. A standalone product deletes as
+        # it always has (its line items keep their own name and price).
+        if product.catalog_product_id:
+            from catalog.services import deletion_refusal
+
+            refusal = deletion_refusal(product.name, [product.pk])
+            if refusal:
+                return Response(
+                    {"error": True, "message": refusal},
+                    status=status.HTTP_409_CONFLICT,
+                )
 
         product.delete()
         return Response(

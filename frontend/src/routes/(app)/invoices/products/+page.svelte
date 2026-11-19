@@ -89,6 +89,11 @@
                     · on <span class="v2-num">{p.used_on}</span>
                     {p.used_on === 1 ? 'invoice' : 'invoices'}
                   {/if}
+                  {#if p.catalog_product}
+                    · <a href={resolve(`invoices/catalog/${p.catalog_product}`)}
+                      >a catalog variant</a
+                    >
+                  {/if}
                 </span>
               </div>
               {#if !p.is_active}

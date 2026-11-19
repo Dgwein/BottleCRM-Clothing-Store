@@ -164,6 +164,7 @@ class InvoiceAdmin(IssuedAmountsReadOnlyMixin, admin.ModelAdmin):
         "contact",
         "opportunity",
         "template",
+        "sales_channel",
     )
     filter_horizontal = ("assigned_to", "teams")
     inlines = [InvoiceLineItemInline, PaymentInline]
@@ -189,6 +190,7 @@ class InvoiceAdmin(IssuedAmountsReadOnlyMixin, admin.ModelAdmin):
                     "account",
                     "contact",
                     "opportunity",
+                    "sales_channel",
                 )
             },
         ),

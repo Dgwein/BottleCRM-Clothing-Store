@@ -135,7 +135,7 @@ Pooling uses psycopg 3's `psycopg_pool` through Django's PostgreSQL backend. It 
 
 | Variable | Default | Required | Purpose |
 | --- | --- | --- | --- |
-| `BODY_SIZE_LIMIT` | `512K` (adapter-node 6); `6M` in the published image and `.env.docker` | Yes, `6M` or more, if you run the frontend outside the published image and want spreadsheet imports | The largest request body the frontend server accepts. A contact or lead import can be 5 MB, so the adapter's default refuses it with a `413` before the API sees it. Read by the Node process at startup, not by `crm/settings.py`. |
+| `BODY_SIZE_LIMIT` | `512K` (adapter-node 6); `45M` in the published image and `.env.docker` | Yes, `6M` or more, if you run the frontend outside the published image and want spreadsheet imports; `45M` for the catalog import | The largest request body the frontend server accepts. A contact or lead import can be 5 MB, and a catalog import sends two files of up to 20 MB each, so the adapter's default refuses them with a `413` before the API sees them. Read by the Node process at startup, not by `crm/settings.py`. |
 
 ### CORS and CSRF
 

@@ -1,0 +1,40 @@
+{% extends "admin/delete_confirmation.html" %}
+{% load i18n %}
+
+{% block delete_confirm %}
+  <div class="errornote" role="alert" id="org-delete-warning">
+    <p><strong>Deleting an organization cannot be undone.</strong></p>
+    {% if sales %}
+      <p>This organization has sales: {{ sales }}. They are deleted with it, with their line
+      items and payments, and cannot be recovered. Export what you need to keep before you go on.</p>
+    {% endif %}
+    {% if deals %}
+      <p>This organization has {{ deals }}. They are deleted with it and cannot be recovered.</p>
+    {% endif %}
+  </div>
+  <p>{% blocktranslate %}Are you sure you want to delete the {{ object_name }} “{{ escaped_object }}”? All of the following related items will be deleted:{% endblocktranslate %}</p>
+  {% include "admin/includes/object_delete_summary.html" %}
+  <form method="post">{% csrf_token %}
+  <div>
+  <input type="hidden" name="post" value="yes">
+  {% if sales %}
+    <p>
+      <label>
+        <input type="checkbox" name="delete_sales" value="yes" required>
+        I understand that {{ sales }} will be deleted with this organization, and that this cannot be undone.
+      </label>
+    </p>
+  {% endif %}
+  {% if deals %}
+    <p>
+      <label>
+        <input type="checkbox" name="delete_deals" value="yes" required>
+        I understand that {{ deals }} will be deleted with this organization, and that this cannot be undone.
+      </label>
+    </p>
+  {% endif %}
+  <input type="submit" value="{% translate 'Yes, I’m sure' %}">
+  <a role="button" href="#" class="button cancel-link">{% translate "No, take me back" %}</a>
+  </div>
+  </form>
+{% endblock %}

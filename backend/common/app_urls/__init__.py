@@ -22,6 +22,7 @@ urlpatterns = [
         include("cases.time_entry_urls", namespace="api_time_entries"),
     ),
     path("invoices/", include("invoices.api_urls", namespace="api_invoices")),
+    path("catalog/", include("catalog.urls", namespace="api_catalog")),
     path("projects/", include("projects.urls", namespace="api_projects")),
     path(
         "boards/", include((board_urlpatterns, "api_boards"))

@@ -80,7 +80,9 @@ function toProduct(p: Schemas['Product']) {
     currency: p.currency ?? null,
     category: (p.category && String(p.category).trim()) || 'Uncategorised',
     is_active: !!p.is_active,
-    used_on: typeof p.used_on === 'number' ? p.used_on : 0
+    used_on: typeof p.used_on === 'number' ? p.used_on : 0,
+    // Set when this row is one variant of a catalog product.
+    catalog_product: p.catalog_product ?? null
   };
 }
 

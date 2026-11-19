@@ -135,6 +135,10 @@ function toDetail(inv: Schemas['Invoice']) {
     invoice_title: inv.invoice_title ?? '',
     status: inv.status,
     account: { id: account?.id ?? null, name: account?.name ?? '(no account)' },
+    /** Where the sale came from; the account is still who pays. */
+    sales_channel: inv.sales_channel
+      ? { id: inv.sales_channel.id, name: inv.sales_channel.name, kind: inv.sales_channel.kind }
+      : null,
     currency: inv.currency ?? 'USD',
     issued_date: inv.issue_date ?? null,
     due_date: inv.due_date ?? null,

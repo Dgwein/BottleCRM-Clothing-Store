@@ -25,6 +25,7 @@ class OrderAdmin(admin.ModelAdmin):
         "name",
         "order_number",
         "account",
+        "sales_channel",
         "status",
         "total_amount",
         "order_date",
@@ -42,6 +43,7 @@ class OrderAdmin(admin.ModelAdmin):
         "account",
         "contact",
         "opportunity",
+        "sales_channel",
     )
     inlines = [OrderLineItemInline]
     date_hierarchy = "created_at"
@@ -65,6 +67,7 @@ class OrderAdmin(admin.ModelAdmin):
                     "account",
                     "contact",
                     "opportunity",
+                    "sales_channel",
                 )
             },
         ),

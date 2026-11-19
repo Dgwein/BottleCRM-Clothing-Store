@@ -82,6 +82,19 @@ uv run python manage.py seed_data --email you@example.com --clear --no-input
 See [Demo data and packs](../getting-started/demo-data.md) for the narrative walkthrough, including
 what a full seeded org looks like and how vertical packs layer on top of it.
 
+## import_mercadolibre
+
+Loads a Mercado Libre bulk-edit report (the characteristics and prices workbooks) into one org's
+catalog. Safe to re-run: rows are matched by their Mercado Libre ids. `--dry-run` prints the report
+and rolls everything back. After the report it prints how many rows were rejected and a line for
+each category left with no products. Admins can run the same import from the web (Invoices ›
+Catalog › Import). See [Product catalog](../architecture/catalog.md#importing-a-channels-report).
+
+```
+uv run python manage.py import_mercadolibre --org "<org name or id>" \
+    --characteristics characteristics.xlsx --prices prices.xlsx [--dry-run]
+```
+
 ## devlogin
 
 Mints a JWT access/refresh pair for an existing user directly from the command line, no OAuth

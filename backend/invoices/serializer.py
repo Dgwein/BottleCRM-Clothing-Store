@@ -7,6 +7,8 @@ from rest_framework import serializers
 
 from accounts.access import visible_accounts_qs
 from accounts.serializer import AccountPickerSerializer
+from catalog.models import SalesChannel
+from catalog.serializers import SalesChannelRefSerializer
 from common.modules import module_is_available, module_off_message, org_of
 from common.permissions import is_org_admin
 from common.serializer import (
@@ -85,11 +87,12 @@ class ProductSerializer(serializers.ModelSerializer):
             "currency",
             "category",
             "is_active",
+            "catalog_product",
             "used_on",
             "created_at",
             "updated_at",
         )
-        read_only_fields = ("id", "created_at", "updated_at")
+        read_only_fields = ("id", "catalog_product", "created_at", "updated_at")
 
     def get_used_on(self, obj) -> int:
         """Distinct invoices this product is a line item on.
@@ -123,6 +126,23 @@ class ProductCreateSerializer(serializers.ModelSerializer):
             "category",
             "is_active",
         )
+
+    def validate(self, attrs):
+        # A catalog variant's name and category come from its catalog product
+        # and axis values (`catalog.services`), so they change there.
+        variant_of = getattr(self.instance, "catalog_product", None)
+        if variant_of is not None:
+            for field in ("name", "category"):
+                if field in attrs and attrs[field] != getattr(self.instance, field):
+                    raise serializers.ValidationError(
+                        {
+                            field: [
+                                f"This is a variant of {variant_of.name}. "
+                                "Change it in the catalog."
+                            ]
+                        }
+                    )
+        return attrs
 
     def create(self, validated_data):
         request = self.context.get("request")
@@ -790,6 +810,7 @@ class InvoiceListSerializer(serializers.ModelSerializer):
     line_items_count = serializers.SerializerMethodField()
     project = serializers.PrimaryKeyRelatedField(read_only=True, allow_null=True)
     is_overdue = serializers.BooleanField(read_only=True)
+    sales_channel = SalesChannelRefSerializer(read_only=True, allow_null=True)
 
     class Meta:
         model = Invoice
@@ -800,6 +821,7 @@ class InvoiceListSerializer(serializers.ModelSerializer):
             "status",
             "account",
             "account_name",
+            "sales_channel",
             "project",
             "contact",
             "contact_name",
@@ -835,6 +857,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
     contact = ContactPickerSerializer(read_only=True, allow_null=True)
     opportunity = OpportunityMinimalSerializer(read_only=True, allow_null=True)
     project = serializers.PrimaryKeyRelatedField(read_only=True, allow_null=True)
+    sales_channel = SalesChannelRefSerializer(read_only=True, allow_null=True)
     template = InvoiceTemplateListSerializer(read_only=True, allow_null=True)
     line_items = InvoiceLineItemSerializer(many=True, read_only=True)
     payments = PaymentSerializer(many=True, read_only=True)
@@ -857,6 +880,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
             "contact",
             "opportunity",
             "project",
+            "sales_channel",
             # Client Details
             "client_name",
             "client_email",
@@ -940,6 +964,9 @@ class InvoiceCreateSerializer(serializers.ModelSerializer):
     template_id = serializers.UUIDField(
         write_only=True, required=False, allow_null=True
     )
+    sales_channel_id = serializers.UUIDField(
+        write_only=True, required=False, allow_null=True
+    )
 
     # Line items for bulk creation
     line_items = InvoiceLineItemCreateSerializer(many=True, required=False)
@@ -953,6 +980,7 @@ class InvoiceCreateSerializer(serializers.ModelSerializer):
             "account_id",
             "contact_id",
             "opportunity_id",
+            "sales_channel_id",
             # Client Details
             "client_name",
             "client_email",
@@ -1050,6 +1078,23 @@ class InvoiceCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Template not found or does not belong to your organization"
             )
+        return value
+
+    def validate_sales_channel_id(self, value):
+        """One of the org's channels. A channel switched off is not offered
+        for a new sale, but an invoice already recording it keeps it."""
+        if value is None:
+            return value
+        if not self.org:
+            raise serializers.ValidationError("Organization context required")
+        channel = SalesChannel.objects.filter(id=value, org=self.org).first()
+        if channel is None:
+            raise serializers.ValidationError(
+                "Sales channel not found or does not belong to your organization"
+            )
+        kept = self.instance is not None and self.instance.sales_channel_id == value
+        if not channel.is_active and not kept:
+            raise serializers.ValidationError("That sales channel is switched off.")
         return value
 
     def validate(self, attrs):

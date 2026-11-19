@@ -3,6 +3,7 @@ import { listAccounts } from '#lib/server/v2/accounts.js';
 import { listContacts } from '#lib/server/v2/contacts.js';
 import { listProducts } from '#lib/server/v2/products.js';
 import { createInvoice } from '#lib/server/v2/invoices.js';
+import { listChannels } from '#lib/server/v2/catalog.js';
 import {
   fieldsForNew,
   readCustomFields,
@@ -26,18 +27,21 @@ type ContactRow = {
 /**
  * The builder needs three pickers: account (required), contact (required, the
  * create serializer enforces it and cross-validates it against the account),
- * and the product catalogue for line items. All three reuse the real list
+ * and the product catalogue for line items; plus the sales channels in use,
+ * to record where the sale came from (optional). All three reuse the real list
  * layers; nothing here is a fixture. Contacts carry their primary account so
  * the page can offer only the ones that pass the account↔contact rule. The
  * org's numbering format feeds the "Assigned on save" preview.
  */
 export const load: PageServerLoad = async ({ cookies }) => {
-  const [accounts, contacts, products, numbering, customFields] = await Promise.all([
+  const [accounts, contacts, products, numbering, customFields, channels] = await Promise.all([
     listAccounts({ cookies }, new URLSearchParams({ limit: '1000' })),
     listContacts({ cookies }, new URLSearchParams({ limit: '1000' })),
     listProducts({ cookies }),
     getNumbering({ cookies }),
-    fieldsForNew(cookies, 'Invoice')
+    fieldsForNew(cookies, 'Invoice'),
+    // The picker is optional: without the channels the invoice is still made.
+    listChannels({ cookies }).catch(() => ({ channels: [] }))
   ]);
 
   return {
@@ -52,7 +56,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
       .filter((p) => p.is_active)
       .map((p) => ({ id: p.id, name: p.name, sku: p.sku, price: p.price })),
     numbering,
-    customFields
+    customFields,
+    /** Channels a new sale can come through: the ones in use. */
+    channels: channels.channels
+      .filter((c) => c.is_active)
+      .map((c) => ({ id: c.id, name: c.name, kind: c.kind }))
   };
 };
 

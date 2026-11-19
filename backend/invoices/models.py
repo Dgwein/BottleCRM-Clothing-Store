@@ -245,7 +245,16 @@ class InvoiceTemplate(BaseModel):
 
 
 class Product(BaseModel):
-    """Product Catalog for Line Items"""
+    """A sellable item: what a line item picks and prices.
+
+    Standalone, it is a single-dimension product. Linked to a
+    `catalog.CatalogProduct`, it is one variant of it. Size and stock are
+    columns, because lists filter, sort and bulk-edit by them; the other axes
+    (color, design) are `catalog.AttributeValue` rows. `variant_key` is the
+    size and those values in a fixed order, so no two variants of one product
+    share them, and `price` is the variant's one price, the one line items
+    quote.
+    """
 
     name = models.CharField(_("Product Name"), max_length=255)
     description = models.TextField(_("Description"), blank=True, null=True)
@@ -257,6 +266,31 @@ class Product(BaseModel):
     category = models.CharField(_("Category"), max_length=100, blank=True, null=True)
     is_active = models.BooleanField(_("Is Active"), default=True)
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="products")
+    catalog_product = models.ForeignKey(
+        "catalog.CatalogProduct",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="variants",
+    )
+    variant_key = models.CharField(max_length=500, blank=True, default="")
+    size = models.CharField(_("Size"), max_length=50, default="Unique")
+    # Derived from `size` on save, so a list can order sizes by age in SQL.
+    size_sort = models.IntegerField(default=0, editable=False)
+    stock = models.PositiveIntegerField(_("Stock"), default=0)
+    gtin = models.CharField(_("GTIN"), max_length=20, blank=True, default="")
+    package_height_cm = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True
+    )
+    package_width_cm = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True
+    )
+    package_depth_cm = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True
+    )
+    package_weight_kg = models.DecimalField(
+        max_digits=8, decimal_places=3, null=True, blank=True
+    )
 
     class Meta:
         verbose_name = "Product"
@@ -266,10 +300,28 @@ class Product(BaseModel):
         unique_together = [["sku", "org"]]
         indexes = [
             models.Index(fields=["org", "is_active"]),
+            models.Index(fields=["org", "size"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["catalog_product", "variant_key"],
+                condition=models.Q(catalog_product__isnull=False),
+                name="product_unique_variant_key",
+            )
         ]
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        from catalog.text import canonical_size, size_sort_order
+
+        self.size = canonical_size(self.size)
+        self.size_sort = size_sort_order(self.size)
+        update_fields = kwargs.get("update_fields")
+        if update_fields is not None and "size" in update_fields:
+            kwargs["update_fields"] = {*update_fields, "size_sort"}
+        super().save(*args, **kwargs)
 
 
 # What `Org.number_date_part` puts between a number's prefix and its counter.
@@ -378,6 +430,15 @@ class Invoice(AssignableMixin, BaseModel):
     project = models.ForeignKey(
         "projects.Project",
         on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="invoices",
+    )
+    # Where the sale came from (an online channel or a physical store). The
+    # account stays the customer who pays.
+    sales_channel = models.ForeignKey(
+        "catalog.SalesChannel",
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
         related_name="invoices",

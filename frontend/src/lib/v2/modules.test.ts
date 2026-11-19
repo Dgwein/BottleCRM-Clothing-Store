@@ -66,6 +66,7 @@ describe('module logic', () => {
       ['/(app)/documents', { all: ['documents'] }],
       ['/(app)/accounts/[id]/statement', { all: ['invoices'] }],
       ['/(app)/invoices/products', { anyOf: ['invoices', 'deals'] }],
+      ['/(app)/invoices/catalog/[id]', { anyOf: ['invoices', 'deals'] }],
       ['/(app)/invoices/estimates', { all: ['invoices'] }],
       ['/(app)/profile/calendar-feed', { all: ['tasks'] }],
       ['/(app)/accounts/[id]', null],
