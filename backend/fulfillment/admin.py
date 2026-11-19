@@ -4,6 +4,7 @@ checked."""
 
 from django.contrib import admin
 
+from common.admin_mixins import OrgScopedAdmin
 from fulfillment import services
 from fulfillment.models import (
     DeliveryOption,
@@ -17,7 +18,7 @@ from fulfillment.models import (
 )
 
 
-class _ReadOnlyAdmin(admin.ModelAdmin):
+class _ReadOnlyAdmin(OrgScopedAdmin, admin.ModelAdmin):
     def has_add_permission(self, request, obj=None):
         return False
 
@@ -25,14 +26,14 @@ class _ReadOnlyAdmin(admin.ModelAdmin):
         return False
 
 
-class DeliveryOptionDayInline(admin.TabularInline):
+class DeliveryOptionDayInline(OrgScopedAdmin, admin.TabularInline):
     model = DeliveryOptionDay
     extra = 0
     fields = ("date", "kind", "opens_at", "note")
 
 
 @admin.register(DeliveryOption)
-class DeliveryOptionAdmin(admin.ModelAdmin):
+class DeliveryOptionAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = (
         "name",
         "kind",
@@ -51,7 +52,7 @@ class DeliveryOptionAdmin(admin.ModelAdmin):
     inlines = [DeliveryOptionDayInline]
 
 
-class PreparationOrderInline(admin.TabularInline):
+class PreparationOrderInline(OrgScopedAdmin, admin.TabularInline):
     model = PreparationOrder
     extra = 0
     fields = ("description", "line_item", "status", "completed_at")
@@ -60,7 +61,7 @@ class PreparationOrderInline(admin.TabularInline):
 
 
 @admin.register(Sale)
-class SaleAdmin(admin.ModelAdmin):
+class SaleAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = ("order", "channel", "committed_delivery_at", "org", "created_at")
     search_fields = ("order__name", "order__order_number")
     raw_id_fields = ("org", "order", "channel")
@@ -72,7 +73,7 @@ class SaleAdmin(admin.ModelAdmin):
 
 
 @admin.register(QueueAssignment)
-class QueueAssignmentAdmin(admin.ModelAdmin):
+class QueueAssignmentAdmin(OrgScopedAdmin, admin.ModelAdmin):
     list_display = ("team", "order_type", "access", "org")
     list_filter = ("order_type", "access")
     raw_id_fields = ("org", "team")
@@ -84,7 +85,7 @@ class PackagingOrderAdmin(_ReadOnlyAdmin):
     list_filter = ("status",)
 
 
-class DispatchOrderItemInline(admin.TabularInline):
+class DispatchOrderItemInline(OrgScopedAdmin, admin.TabularInline):
     model = DispatchOrderItem
     extra = 0
     fields = ("sale", "estimated_delivery_at", "late", "cost_share", "penalty")

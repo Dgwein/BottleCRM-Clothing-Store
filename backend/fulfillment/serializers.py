@@ -64,7 +64,8 @@ class SalesChannelSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["kind"] = SalesChannel.ONLINE
         validated_data["code"] = ""
-        return SalesChannel.objects.create(org=self.context["org"], **validated_data)
+        validated_data["org"] = self.context["org"]
+        return SalesChannel.objects.create(**validated_data)
 
 
 NO_BUSINESS_HOURS = "This organization has no business hours to import."
